@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "360298353974",
+    "project_id": "easy-ride-app-3b2c6",
+    "storage_bucket": "easy-ride-app-3b2c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360298353974:android:df1dd4c6418c0053ad4f97",
+        "android_client_info": {
+          "package_name": "com.example.easy_ride_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "360298353974-115ieh5dv99kpm0c3nhhru0su8s19gf1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDD47CRMVJBuQ3vX1uduZwflfk8sXSp8S0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "360298353974-115ieh5dv99kpm0c3nhhru0su8s19gf1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
