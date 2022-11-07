@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:easy_ride_app/searchscreen.dart';
 import 'package:flutter/material.dart';
@@ -6,17 +7,49 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'Assistants/assistantMethods.dart';
 import 'locationService.dart';
+import 'package:flutter/services.dart';
+import 'ride.dart';
 
 class MainScreen extends StatefulWidget {
   static const String idScreen = "mainScreen";
   //const MainScreen({Key? key}) : super(key: key);
  //FirebaseService _service = FirebaseService();
 
+
 //try lbs Amira
   double _latitude=0;
   double _longtitude=0;
   @override
   _MainScreenState createState() => _MainScreenState();
+}
+
+void getRide(BuildContext context) async {
+  final rideAppFile1 = await rootBundle.loadString('json/rideapp_1.json');
+  final rideAppFile2 = await rootBundle.loadString('json/rideapp_2.json');
+  final rideAppFile3 = await rootBundle.loadString('json/rideapp_3.json');
+
+  final json1 = jsonDecode(rideAppFile1);
+  final json2 = jsonDecode(rideAppFile2);
+  final json3 = jsonDecode(rideAppFile3);
+
+  checkRideDistance(json1, 'Bolt');
+  checkRideDistance(json2, 'Uber');
+  checkRideDistance(json3, 'Careem');
+}
+
+void checkRideDistance(json, appName) async {
+  var userLocation_lat = 21.817434554305592;
+  var userLocation_lng = 39.174088106291514;
+
+  var data = json["data"];
+  print('Ride app (' + appName + ')');
+  for( var i in data ) {
+    double distanceInMeters = Geolocator.distanceBetween(userLocation_lat, userLocation_lng, i['locationLat'], i['locationLng']);
+    if (distanceInMeters <= 5000) {
+      print('\t Car id = ' + i['car_id']);
+      print('\t Distance = ' + distanceInMeters.toString());
+    }
+  }
 }
 
 class _MainScreenState extends State<MainScreen> {
@@ -76,6 +109,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // test json
+    getRide(context);
    //AssistantMethods.searchCoordinateAddress(currentPosition, context);
     return Scaffold(
 

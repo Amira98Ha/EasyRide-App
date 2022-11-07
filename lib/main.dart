@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Easy Ride App',
       theme: ThemeData(
         fontFamily: "Brand Bold",

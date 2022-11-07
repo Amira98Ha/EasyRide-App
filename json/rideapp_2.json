@@ -1,0 +1,40 @@
+{
+  "data":[
+    {
+      "car_id":"Uber_b_55",
+      "car_type":"basic",
+      "car_color":"red",
+      "locationLat":21.61555509809338,
+      "locationLng":39.10799094727195
+    },
+    {
+      "car_id":"Uber_f_73",
+      "car_type":"family",
+      "car_color":"green",
+      "locationLat":21.510625831698714,
+      "locationLng":39.16885942620809
+    },
+
+    {
+      "car_id":"Uber_l_98",
+      "car_type":"luxury",
+      "car_color":"blue",
+      "locationLat":21.572874584429556,
+      "locationLng":39.127456961778385
+    },
+    {
+      "car_id":"Uber_b_99",
+      "car_type":"basic",
+      "car_color":"black",
+      "locationLat":21.57663950621688,
+      "locationLng":39.19598812457352
+    },
+    {
+      "car_id":"Uber_f_44",
+      "car_type":"family",
+      "car_color":"gray",
+      "locationLat":21.57013256101353,
+      "locationLng":39.22099171476728
+    }
+  ]
+}
