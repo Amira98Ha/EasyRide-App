@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.easy_ride_app">
+          xmlns:tools="http://schemas.android.com/tools" package="com.example.easy_ride_app">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -37,4 +37,6 @@
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyDD47CRMVJBuQ3vX1uduZwflfk8sXSp8S0"/>
     </application>
+
+
 </manifest>

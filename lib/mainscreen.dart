@@ -1,13 +1,20 @@
 import 'dart:async';
 
+import 'package:easy_ride_app/searchscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'Assistants/assistantMethods.dart';
+import 'locationService.dart';
 
 class MainScreen extends StatefulWidget {
   static const String idScreen = "mainScreen";
   //const MainScreen({Key? key}) : super(key: key);
+ //FirebaseService _service = FirebaseService();
 
+//try lbs Amira
+  double _latitude=0;
+  double _longtitude=0;
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -23,32 +30,60 @@ class _MainScreenState extends State<MainScreen> {
   late Position currentPosition;
   var geoLocator = Geolocator();
 
+  //bool drawerOpen = true;
+   //late String address;
+
+
 
   //To get Current Location
   void locatePosition() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     currentPosition = position;
 
     LatLng latLngPosition = LatLng(position.latitude, position.longitude);
 
-    CameraPosition cameraPosition =
-        new CameraPosition(target: latLngPosition, zoom: 14);
-
+    CameraPosition cameraPosition = new CameraPosition(target: latLngPosition, zoom: 14);
     //animation
-    newGoogleMapController
-        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    newGoogleMapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+
+    //address = AssistantMethods.searchCoordinateAddress(currentPosition, context) as String;
+    //print("------------**************************-------------------------***This is your address:: $address");
   }
 
   static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
+    target: LatLng(21.485811, 39.1925048),
     zoom: 14.4746,
   );
 
+
+
+  //try amira
+  //locationService _locationService = locationService();
+  //_locationService.sendLocationToDataBase(context);
+  //_locationService.goToMaps(_latitude, _longitude);
+
+
+  //PIN Marker
+  final List<Marker> _markers = const <Marker>[
+    Marker(
+      markerId: MarkerId("1"),
+      position: LatLng(21.485811, 39.1925048),
+      infoWindow: InfoWindow(
+        title: 'the title of the marker'
+      )
+    )
+  ];
+
   @override
   Widget build(BuildContext context) {
+   //AssistantMethods.searchCoordinateAddress(currentPosition, context);
     return Scaffold(
-     
+
+    // floatingActionButton: FloatingActionButton(
+      // onPressed:(){
+        //  _locationService.sendLocationToDataBase(context);
+       //};
+     //)
 
 
 
@@ -61,10 +96,12 @@ class _MainScreenState extends State<MainScreen> {
             myLocationEnabled: true,
             zoomControlsEnabled: true,
             zoomGesturesEnabled: true,
+            markers: Set<Marker>.of(_markers),
             onMapCreated: (GoogleMapController controller) {
               locatePosition();
               _controllerGoogleMap.complete(controller);
               newGoogleMapController = controller;
+
             },
           ),
          
@@ -117,13 +154,11 @@ class _MainScreenState extends State<MainScreen> {
                       SizedBox(height: 20,),
 
 
-
+                      // To display searchScreen on tap drop off label
                       GestureDetector(
-                        onTap: () async{
-                         
+                        onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchScreen()));
                         },
-
-
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -188,7 +223,7 @@ class _MainScreenState extends State<MainScreen> {
                             children: [
                               Text("Add Work"),
                               SizedBox(height: 4.0),
-                              Text("Your Office address",
+                              Text("your work",
                                 style: TextStyle(color: Colors.black54,
                                     fontSize: 12),)
                             ],
