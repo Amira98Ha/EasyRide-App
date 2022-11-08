@@ -13,32 +13,44 @@ class MapScreen extends StatefulWidget {
 }
 
 void getRide(BuildContext context) async {
-  final rideAppFile1 = await rootBundle.loadString('json/rideapp_1.json');
-  final rideAppFile2 = await rootBundle.loadString('json/rideapp_2.json');
-  final rideAppFile3 = await rootBundle.loadString('json/rideapp_3.json');
+  final boltAppFile = await rootBundle.loadString('json/bolt_app.json');
+  final uberAppFile = await rootBundle.loadString('json/uber_app.json');
+  final careemAppFile = await rootBundle.loadString('json/uber_app.json');
 
-  final json1 = jsonDecode(rideAppFile1);
-  final json2 = jsonDecode(rideAppFile2);
-  final json3 = jsonDecode(rideAppFile3);
+  final boltJson = jsonDecode(boltAppFile);
+  final uberJson = jsonDecode(uberAppFile);
+  final careemJson = jsonDecode(careemAppFile);
 
-  checkRideDistance(json1, 'Bolt');
-  checkRideDistance(json2, 'Uber');
-  checkRideDistance(json3, 'Careem');
+  checkRideDistance(boltJson, 'Bolt');
+  checkRideDistance(uberJson, 'Uber');
+  checkRideDistance(careemJson, 'Careem');
 }
 
-void checkRideDistance(json, appName) async {
-  var userLocation_lat = 21.817434554305592;
-  var userLocation_lng = 39.174088106291514;
+void checkRideDistance(jsonFile, appName) async {
+  var userLocation_lat =  21.598660570966686;
+  var userLocation_lng = 39.20762783587018;
 
-  var data = json["data"];
-  print('Ride app (' + appName + ')');
-  for (var i in data) {
-    double distanceInMeters = Geolocator.distanceBetween(
-        userLocation_lat, userLocation_lng, i['locationLat'], i['locationLng']);
+  var data = jsonFile["data"];
+
+  List<String> ridesList = [];
+
+  for( var i in data ) {
+    double distanceInMeters = Geolocator.distanceBetween(userLocation_lat, userLocation_lng, i['locationLat'], i['locationLng']);
     if (distanceInMeters <= 5000) {
-      print('\t Car id = ' + i['car_id']);
-      print('\t Distance = ' + distanceInMeters.toString());
+      String s = '\tCar id = ' + i['car_id'] + '\n\tDistance =' + distanceInMeters.toString();
+      ridesList.add(s);
     }
+  }
+
+  print('Ride app (' + appName + ')');
+
+  if (ridesList.isNotEmpty) {
+    for ( var i in ridesList) {
+      print(i);
+    }
+  }
+  else {
+    print('\t There is no car available in your area');
   }
 }
 
