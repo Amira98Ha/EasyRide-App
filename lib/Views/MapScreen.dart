@@ -15,7 +15,7 @@ class MapScreen extends StatefulWidget {
 void getRide(BuildContext context) async {
   final boltAppFile = await rootBundle.loadString('json/bolt_app.json');
   final uberAppFile = await rootBundle.loadString('json/uber_app.json');
-  final careemAppFile = await rootBundle.loadString('json/uber_app.json');
+  final careemAppFile = await rootBundle.loadString('json/careem_app.json');
 
   final boltJson = jsonDecode(boltAppFile);
   final uberJson = jsonDecode(uberAppFile);
