@@ -12,47 +12,7 @@ class MapScreen extends StatefulWidget {
   _MapScreenState createState() => _MapScreenState();
 }
 
-void getRide(BuildContext context) async {
-  final boltAppFile = await rootBundle.loadString('json/bolt_app.json');
-  final uberAppFile = await rootBundle.loadString('json/uber_app.json');
-  final careemAppFile = await rootBundle.loadString('json/careem_app.json');
 
-  final boltJson = jsonDecode(boltAppFile);
-  final uberJson = jsonDecode(uberAppFile);
-  final careemJson = jsonDecode(careemAppFile);
-
-  checkRideDistance(boltJson, 'Bolt');
-  checkRideDistance(uberJson, 'Uber');
-  checkRideDistance(careemJson, 'Careem');
-}
-
-void checkRideDistance(jsonFile, appName) async {
-  var userLocation_lat =  21.598660570966686;
-  var userLocation_lng = 39.20762783587018;
-
-  var data = jsonFile["data"];
-
-  List<String> ridesList = [];
-
-  for( var i in data ) {
-    double distanceInMeters = Geolocator.distanceBetween(userLocation_lat, userLocation_lng, i['locationLat'], i['locationLng']);
-    if (distanceInMeters <= 5000) {
-      String s = '\tCar id = ' + i['car_id'] + '\n\tDistance =' + distanceInMeters.toString();
-      ridesList.add(s);
-    }
-  }
-
-  print('Ride app (' + appName + ')');
-
-  if (ridesList.isNotEmpty) {
-    for ( var i in ridesList) {
-      print(i);
-    }
-  }
-  else {
-    print('\t There is no car available in your area');
-  }
-}
 
 class _MapScreenState extends State<MapScreen> {
   //To control the map
@@ -65,7 +25,46 @@ class _MapScreenState extends State<MapScreen> {
     target: LatLng(21.5799, 39.1808), //latitude, longitude
     zoom: 14.4746,
   );
+  void getRide(BuildContext context) async {
+    final boltAppFile = await rootBundle.loadString('json/bolt_app.json');
+    final uberAppFile = await rootBundle.loadString('json/uber_app.json');
+    final careemAppFile = await rootBundle.loadString('json/careem_app.json');
 
+    final boltJson = jsonDecode(boltAppFile);
+    final uberJson = jsonDecode(uberAppFile);
+    final careemJson = jsonDecode(careemAppFile);
+
+    checkRideDistance(boltJson, 'Bolt');
+    checkRideDistance(uberJson, 'Uber');
+    checkRideDistance(careemJson, 'Careem');
+  }
+
+  void checkRideDistance(jsonFile, appName) async {
+
+    var data = jsonFile["data"];
+
+    List<String> ridesList = [];
+
+    for( var i in data ) {
+      double distanceInMeters = Geolocator.distanceBetween(
+          currentLocation.latitude, currentLocation.longitude, i['locationLat'], i['locationLng']);
+      if (distanceInMeters <= 5000) {
+        String s = '\tCar id = ' + i['car_id'] + '\n\tDistance =' + distanceInMeters.toString();
+        ridesList.add(s);
+      }
+    }
+
+    print('Ride app (' + appName + ')');
+
+    if (ridesList.isNotEmpty) {
+      for ( var i in ridesList) {
+        print(i);
+      }
+    }
+    else {
+      print('\t There is no car available in your area');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     //test JISON
