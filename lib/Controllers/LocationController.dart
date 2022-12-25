@@ -30,4 +30,6 @@ class LocationController {
     _locationData = await location.getLocation();
     return _locationData;
   }
+
+
 }
