@@ -1,8 +1,9 @@
-import 'dart:async';
-
+import 'package:easy_ride_app/Controllers/RequestController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_place/google_place.dart';
+
+import '../Models/MapsConstants.dart';
+import '../Models/PlacesPredictions.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -10,35 +11,11 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final _startSearchFieldController = TextEditingController();
-  final _endSearchFieldController = TextEditingController();
+  String API_KEY = MapsConstants.apiKey;
+  List<PlacesPredictions> placesPredictionsList = [];
 
-  //**GoogleAPIKEY
-  late GooglePlace googlePlace;
-  List<AutocompletePrediction> predictions = [];
-  Timer? _debounce;
-
-  void initState(){
-    super.initState();
-    String apiKey = "AIzaSyDD47CRMVJBuQ3vX1uduZwflfk8sXSp8S0";
-    googlePlace = GooglePlace(apiKey);
-  }
-  //**Method autocomplete
-  void autoCompleteSearch(String value) async {
-    var result = await googlePlace.autocomplete.get(value);
-    if (result != null && result.predictions != null && mounted) {
-      print(result.predictions!.first.description);
-      setState(() {
-        predictions = result.predictions!;
-      });
-    }
-  }
-
-
-  /*
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Column(
         children: [
@@ -92,6 +69,9 @@ class _SearchScreenState extends State<SearchScreen> {
                           child: Padding(
                             padding: EdgeInsets.all(3.0),
                             child: TextField(
+                              onChanged: (val) {
+                                findPlace(val);
+                              },
                               decoration: InputDecoration(
                                 hintText: "PickUp Location",
                                 fillColor: Colors.grey[200],
@@ -100,14 +80,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 isDense: true,
                                 contentPadding: EdgeInsets.all(10),
                               ),
-                              onChanged(value){
-                                if(valu.isNotEmpty){
-
-                            }
-                                else{}
-                            },
                             ),
-
                           ),
                         ),
                       ),
@@ -149,81 +122,109 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
           ),
-          SizedBox(
-            height: 10,
-          ),
+          /*SizedBox(
+            height: 10.0,
+          ),*/
 
-          //second Mising
+          //Display PredictionsTile Class
+          (placesPredictionsList.length > 0)
+              ? Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  child: ListView.separated(
+                    padding: EdgeInsets.all(0.0),
+                    itemBuilder: (context, index) {
+                      return PredictionsTile(
+                        placesPredictions: placesPredictionsList[index],
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        Divider(),
+                    itemCount: placesPredictionsList.length,
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                  ),
+                )
+              : Container(),
+        ],
+      ),
+    );
+  }
+
+  //Method to autocomplete places from google map
+  void findPlace(String placeName) async {
+    if (placeName.length > 1) {
+      String autoCompleteURL =
+          "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$placeName&key=$API_KEY&sessiontoken=1234567890&components=country:sa";
+
+      var res = await RequestController.getRequest(autoCompleteURL);
+
+      if (res == "failed") {
+        return;
+      }
+      if (res["status"] == "OK") {
+        var predictions = res["predictions"];
+
+        var placesList = (predictions as List)
+            .map((e) => PlacesPredictions.formJson(e))
+            .toList();
+
+        setState(() {
+          placesPredictionsList = placesList;
+        });
+      }
+    }
+  }
+}
+
+//Widget to display Place Predictions
+class PredictionsTile extends StatelessWidget {
+  final PlacesPredictions placesPredictions;
+  PredictionsTile({Key? key, required this.placesPredictions})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          SizedBox(
+            width: 10.0,
+          ),
+          Row(
+            children: [
+              Icon(Icons.add_location),
+              SizedBox(
+                width: 14.0,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //SizedBox(height: 8.0,),
+                    Text(
+                      placesPredictions.main_text,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                    SizedBox(
+                      height: 8.0,
+                    ),
+                    Text(
+                      placesPredictions.secondary_text,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 12.0, color: Colors.grey),
+                    ),
+                    //SizedBox(height: 8.0,),
+                  ],
+                ),
+              )
+            ],
+          ),
+          SizedBox(
+            width: 14.0,
+          ),
         ],
       ),
     );
   }
 }
-*/
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: const BackButton(color: Colors.black),
-        elevation: 0,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _startSearchFieldController,
-              autofocus: false,
-              style: TextStyle(fontSize: 24),
-              decoration: InputDecoration(
-                  hintText: 'Starting Point',
-                  hintStyle: const TextStyle(
-                      fontWeight: FontWeight.w500, fontSize: 24),
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                  border: InputBorder.none),
-              onChanged: (value) {
-                if (_debounce?.isActive ?? false) _debounce!.cancel();
-                _debounce = Timer(const Duration(milliseconds: 1000), () {
-                  if (value.isNotEmpty) {
-                    //places api
-                    autoCompleteSearch(value);
-                  } else {
-                    //clear out the results
-                  }
-                });
-              },
-            ),
-            SizedBox(height: 10),
-            TextField(
-              controller: _endSearchFieldController,
-              autofocus: false,
-              style: TextStyle(fontSize: 24),
-              decoration: InputDecoration(
-                  hintText: 'End Point',
-                  hintStyle: const TextStyle(
-                      fontWeight: FontWeight.w500, fontSize: 24),
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                  border: InputBorder.none),
-              onChanged: (value) {
-                if (_debounce?.isActive ?? false) _debounce!.cancel();
-                _debounce = Timer(const Duration(milliseconds: 1000), () {
-                  if (value.isNotEmpty) {
-                    //places api
-                    autoCompleteSearch(value);
-                  } else {
-                    //clear out the results
-                  }
-                });
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-

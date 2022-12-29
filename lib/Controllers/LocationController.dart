@@ -1,3 +1,4 @@
+
 import 'package:location/location.dart';
 
 class LocationController {
@@ -33,3 +34,4 @@ class LocationController {
 
 
 }
+
