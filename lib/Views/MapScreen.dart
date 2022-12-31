@@ -1,8 +1,8 @@
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -13,75 +13,112 @@ class MapScreen extends StatefulWidget {
   _MapScreenState createState() => _MapScreenState();
 }
 
-
-
 class _MapScreenState extends State<MapScreen> {
-  //To control the map
-  Completer<GoogleMapController> _googleMapcontroller = Completer();
+  Completer<GoogleMapController> _controller = Completer();
+  late GoogleMapController newGoogleMapController;
+  late Position currentPosition;
+  Set<Marker> markers = {};
+  var geoLocator = Geolocator();
 
-  LatLng currentLocation = _initialPositionOfCamera.target;
+  var currentAddress = "";
 
-  //The first Position of Camera
-  static final CameraPosition _initialPositionOfCamera = CameraPosition(
-    target: LatLng(21.5799, 39.1808), //latitude, longitude
+
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(21.580529960492743, 39.18089494603335),
     zoom: 14.4746,
   );
-  void getRide(BuildContext context) async {
-    final boltAppFile = await rootBundle.loadString('json/bolt_app.json');
-    final uberAppFile = await rootBundle.loadString('json/uber_app.json');
-    final careemAppFile = await rootBundle.loadString('json/careem_app.json');
 
-    final boltJson = jsonDecode(boltAppFile);
-    final uberJson = jsonDecode(uberAppFile);
-    final careemJson = jsonDecode(careemAppFile);
+  void locatePosition() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    currentPosition = position;
 
-    checkRideDistance(boltJson, 'Bolt');
-    checkRideDistance(uberJson, 'Uber');
-    checkRideDistance(careemJson, 'Careem');
+    LatLng latLngPosition = LatLng(position.latitude, position.longitude);
+
+    CameraPosition cameraPosition =
+    new CameraPosition(target: latLngPosition, zoom: 14);
+    newGoogleMapController.animateCamera(
+        (CameraUpdate.newCameraPosition(cameraPosition)));
+
+    markers.add(Marker(markerId: const MarkerId('currentLocation'),position: LatLng(position.latitude, position.longitude)));
+
+    getAddress();
   }
 
-  void checkRideDistance(jsonFile, appName) async {
-
-    var data = jsonFile["data"];
-
-    List<String> ridesList = [];
-
-    for( var i in data ) {
-      double distanceInMeters = Geolocator.distanceBetween(
-          currentLocation.latitude, currentLocation.longitude, i['locationLat'], i['locationLng']);
-      if (distanceInMeters <= 5000) {
-        String s = '\tCar id = ' + i['car_id'] + '\n\tDistance =' + distanceInMeters.toString();
-        ridesList.add(s);
-      }
-    }
-
-    print('Ride app (' + appName + ')');
-
-    if (ridesList.isNotEmpty) {
-      for ( var i in ridesList) {
-        print(i);
-      }
-    }
-    else {
-      print('\t There is no car available in your area');
-    }
+  void getAddress() async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(currentPosition.latitude, currentPosition.longitude);
+    setState(() {
+      currentAddress = placemarks.reversed.last.street.toString();
+    });
   }
+
+  //
+  //
+  // LatLng currentLocation = _initialPositionOfCamera.target;
+  //
+  //
+  // void getRide(BuildContext context) async {
+  //   final boltAppFile = await rootBundle.loadString('json/bolt_app.json');
+  //   final uberAppFile = await rootBundle.loadString('json/uber_app.json');
+  //   final careemAppFile = await rootBundle.loadString('json/careem_app.json');
+  //
+  //   final boltJson = jsonDecode(boltAppFile);
+  //   final uberJson = jsonDecode(uberAppFile);
+  //   final careemJson = jsonDecode(careemAppFile);
+  //
+  //   checkRideDistance(boltJson, 'Bolt');
+  //   checkRideDistance(uberJson, 'Uber');
+  //   checkRideDistance(careemJson, 'Careem');
+  // }
+  //
+  // void checkRideDistance(jsonFile, appName) async {
+  //   var data = jsonFile["data"];
+  //
+  //   List<String> ridesList = [];
+  //
+  //   for( var i in data ) {
+  //     double distanceInMeters = Geolocator.distanceBetween(currentLocation.latitude,
+  //         currentLocation.longitude, i['locationLat'], i['locationLng']);
+  //
+  //     if (distanceInMeters <= 5000) {
+  //       String s = '\tCar id = ' + i['car_id'] + '\n\tDistance = ' + distanceInMeters.toString();
+  //       ridesList.add(s);
+  //     }
+  //   }
+  //
+  //   print('Ride app (' + appName + ')');
+  //
+  //   if (ridesList.isNotEmpty) {
+  //     for ( var i in ridesList) {
+  //       print(i);
+  //     }
+  //   }
+  //   else {
+  //     print('\t There is no car available in your area');
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
-    //test JISON
-    getRide(context);
+    // getRide(context);
     return new Scaffold(
       body: Stack(
         children: [
           //Google Map Widget
           GoogleMap(
-              initialCameraPosition: _initialPositionOfCamera,
-              mapType: MapType.normal,
-              onMapCreated: (controller) => _googleMapcontroller.complete(controller),
-              onCameraMove: (CameraPosition newPosition) {
-                currentLocation = newPosition.target;
-              } //onCameraMove
-              ),
+            mapType: MapType.normal,
+            myLocationButtonEnabled: true,
+            myLocationEnabled: true,
+            zoomControlsEnabled:  true,
+            zoomGesturesEnabled: true,
+            markers: markers,
+            initialCameraPosition: _kGooglePlex,
+            onMapCreated: (GoogleMapController controller){
+              _controller.complete(controller);
+              newGoogleMapController = controller;
+              locatePosition();
+            },
+          ),
 
           //Search Navigation UI
           Positioned(
@@ -137,7 +174,7 @@ class _MapScreenState extends State<MapScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SearchScreen()));
+                                    builder: (context) => SearchScreen(currentAddress: currentAddress)));
                           },
                           child: Container(
                               decoration: BoxDecoration(
@@ -158,7 +195,7 @@ class _MapScreenState extends State<MapScreen> {
                                   children: [
                                     Icon(Icons.search, color: Colors.grey),
                                     SizedBox(width: 10.0),
-                                    Text("Search Drop Off"),
+                                    Text(currentAddress),
                                   ],
                                 ),
                               )),

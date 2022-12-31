@@ -6,11 +6,18 @@ import '../Models/MapsConstants.dart';
 import '../Models/PlacesPredictions.dart';
 
 class SearchScreen extends StatefulWidget {
+  SearchScreen({required this.currentAddress});
+  final String currentAddress;
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  _SearchScreenState createState() {
+    return _SearchScreenState(this.currentAddress);
+  }
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  final String currentAddress;
+  _SearchScreenState(this.currentAddress);
+
   String API_KEY = MapsConstants.apiKey;
   List<PlacesPredictions> placesPredictionsList = [];
 
@@ -69,6 +76,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           child: Padding(
                             padding: EdgeInsets.all(3.0),
                             child: TextField(
+                              controller: TextEditingController(text: currentAddress),
                               onChanged: (val) {
                                 findPlace(val);
                               },
