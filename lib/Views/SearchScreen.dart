@@ -21,6 +21,15 @@ class _SearchScreenState extends State<SearchScreen> {
   String API_KEY = MapsConstants.apiKey;
   List<PlacesPredictions> placesPredictionsList = [];
 
+  TextEditingController _controller = new TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.text = currentAddress;
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +85,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           child: Padding(
                             padding: EdgeInsets.all(3.0),
                             child: TextField(
-                              controller: TextEditingController(text: currentAddress),
+                              controller: _controller,
                               onChanged: (val) {
                                 findPlace(val);
                               },
