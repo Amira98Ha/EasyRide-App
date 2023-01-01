@@ -22,7 +22,6 @@ class _MapScreenState extends State<MapScreen> {
 
   var currentAddress = "";
 
-
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(21.580529960492743, 39.18089494603335),
     zoom: 14.4746,
@@ -36,17 +35,20 @@ class _MapScreenState extends State<MapScreen> {
     LatLng latLngPosition = LatLng(position.latitude, position.longitude);
 
     CameraPosition cameraPosition =
-    new CameraPosition(target: latLngPosition, zoom: 14);
-    newGoogleMapController.animateCamera(
-        (CameraUpdate.newCameraPosition(cameraPosition)));
+        new CameraPosition(target: latLngPosition, zoom: 14);
+    newGoogleMapController
+        .animateCamera((CameraUpdate.newCameraPosition(cameraPosition)));
 
-    markers.add(Marker(markerId: const MarkerId('currentLocation'),position: LatLng(position.latitude, position.longitude)));
+    markers.add(Marker(
+        markerId: const MarkerId('currentLocation'),
+        position: LatLng(position.latitude, position.longitude)));
 
     getAddress();
   }
 
   void getAddress() async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(currentPosition.latitude, currentPosition.longitude);
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        currentPosition.latitude, currentPosition.longitude);
     setState(() {
       currentAddress = placemarks.reversed.last.street.toString();
     });
@@ -109,11 +111,11 @@ class _MapScreenState extends State<MapScreen> {
             mapType: MapType.normal,
             myLocationButtonEnabled: true,
             myLocationEnabled: true,
-            zoomControlsEnabled:  true,
+            zoomControlsEnabled: true,
             zoomGesturesEnabled: true,
             markers: markers,
             initialCameraPosition: _kGooglePlex,
-            onMapCreated: (GoogleMapController controller){
+            onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
               newGoogleMapController = controller;
               locatePosition();
@@ -149,8 +151,7 @@ class _MapScreenState extends State<MapScreen> {
                   //Box Detiles Style
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 24.0, vertical: 18.0
-                    ),
+                        horizontal: 24.0, vertical: 18.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -172,9 +173,9 @@ class _MapScreenState extends State<MapScreen> {
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SearchScreen(currentAddress: currentAddress)));
+                            context,
+                            MaterialPageRoute(
+                            builder: (context) => SearchScreen(currentAddress: currentAddress)));
                           },
                           child: Container(
                               decoration: BoxDecoration(
@@ -195,7 +196,8 @@ class _MapScreenState extends State<MapScreen> {
                                   children: [
                                     Icon(Icons.search, color: Colors.grey),
                                     SizedBox(width: 10.0),
-                                    Text(currentAddress),
+                                    Text("Search Drop Off"),
+                                    //Text(currentAddress),
                                   ],
                                 ),
                               )),
