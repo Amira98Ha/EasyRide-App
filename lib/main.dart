@@ -1,3 +1,4 @@
+import 'package:easy_ride_app/Views/SearchScreen.dart';
 import 'package:flutter/material.dart';
 
 import 'Views/MapScreen.dart';

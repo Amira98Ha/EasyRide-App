@@ -1,21 +1,20 @@
-import 'Uber.dart';
+import 'Bolt.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
-class UberPriceEstimates {
+class BoltPriceEstimates {
   var start_latitude;
   var start_longitude;
   var end_latitude;
   var end_longitude;
 
-  UberPriceEstimates() {}
+  BoltPriceEstimates() {}
 
- 
+
 
   Future<Map<String, dynamic>> getPrice(var start_latitude, var start_longitude, var end_latitude, var end_longitude) async {
-    final priceFile = await rootBundle.loadString('json/UberPriceEstimates1.json');
+    final priceFile = await rootBundle.loadString('json/BoltPriceEstimates1.json');
     final Map<String, dynamic> priceJson =  jsonDecode(priceFile);
-    // List<dynamic> data = priceJson["prices"];
     return priceJson;
   }
 
