@@ -13,6 +13,9 @@ class ResultScreen extends StatefulWidget {
 
 }
 
+//
+//
+
 class _ResultScreenState extends State<ResultScreen> {
 
   var start_latitude = 21.580948130893006;
