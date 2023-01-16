@@ -1,10 +1,11 @@
+import '../Models/UberAPI/Uber.dart';
+import '../Models/UberAPI/UberPrices.dart';
+import '../Models/UberAPI/UberTimes.dart';
+import '../Models/BoltAPI/Bolt.dart';
+import '../Models/BoltAPI/BoltPrices.dart';
+import '../Models/BoltAPI/BoltTimes.dart';
+
 import 'package:flutter/material.dart';
-import '../Models/UberPriceEstimates.dart';
-import '../Models/UberTimeEstimates.dart';
-import '../Models/Uber.dart';
-import '../Models/BoltPriceEstimates.dart';
-import '../Models/BoltTimeEstimates.dart';
-import '../Models/Bolt.dart';
 
 class ResultScreen extends StatefulWidget {
   @override
@@ -19,42 +20,51 @@ class _ResultScreenState extends State<ResultScreen> {
   var end_latitude = 21.627725155960892;
   var end_longitude = 39.11108797417971;
 
+  // for uber app
+  Uber uberOpject = new Uber();
+  List<UberPrices> uberPriceList = [];
+  List<UberTimes> uberTimeList = [];
+
+  // for bolt app
+  Bolt boltOpject = new Bolt();
+  List<BoltPrices> boltPriceList = [];
+  List<BoltTimes> boltTimeList = [];
+
+
+  // test for elaf and amera
+  void test() {
+    List<String> testList = [];
+    for (var i in uberPriceList) {
+      testList.add(uberPriceList[0].currency_code);
+    }
+
+    print("----------------");
+    print(testList);
+    print("----------------");
+  }
 
   // Price Estimates for uber app
   void getUberPriceEstimates() async {
+    uberPriceList = await uberOpject.uberPriceEstimates.getPrice(start_latitude, start_longitude, end_latitude, end_longitude);
 
-    Uber uberOpject = new Uber();
-    Map<String, dynamic> priceEstimatesList = await uberOpject.uberPriceEstimates.getPrice(start_latitude, start_longitude, end_latitude, end_longitude);
-    var prices = priceEstimatesList["prices"];
-    print(prices);
-
+    // test
+    print("----------------");
+    print(uberPriceList[0].display_name);
+    print("----------------");
   }
   // Time Estimates for uber app
   void getUberTimeEstimates() async {
-
-    Uber uberOpject = new Uber();
-    Map<String, dynamic> timeEstimatesList = await uberOpject.uberTimeEstimates.getTime(start_latitude, start_longitude);
-    var times = timeEstimatesList["times"];
-    print(times);
-
+    uberTimeList = await uberOpject.uberTimeEstimates.getTime(start_latitude, start_longitude);
   }
+
   // Price Estimates for bolt app
   void getBoltPriceEstimates() async {
-
-    Bolt boltOpject = new Bolt();
-    Map<String, dynamic> priceEstimatesList = await boltOpject.boltPriceEstimates.getPrice(start_latitude, start_longitude, end_latitude, end_longitude);
-    var prices = priceEstimatesList["prices"];
-    print(prices);
-
+    boltPriceList = await boltOpject.boltPriceEstimates.getPrice(start_latitude, start_longitude, end_latitude, end_longitude);
   }
+
   // Time Estimates for bolt app
   void getBoltTimeEstimates() async {
-
-    Bolt boltOpject = new Bolt();
-    Map<String, dynamic> timeEstimatesList = await boltOpject.boltTimeEstimates.getTime(start_latitude, start_longitude);
-    var times = timeEstimatesList["times"];
-    print(times);
-
+    boltTimeList = await boltOpject.boltTimeEstimates.getTime(start_latitude, start_longitude);
   }
 
 
@@ -62,6 +72,8 @@ class _ResultScreenState extends State<ResultScreen> {
   Widget build(BuildContext context) {
     getUberPriceEstimates() ;
     getUberTimeEstimates();
+    // for test
+    test();
     getBoltPriceEstimates() ;
     getBoltTimeEstimates();
 
