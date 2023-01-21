@@ -4,6 +4,7 @@ import '../Models/UberAPI/UberTimes.dart';
 import '../Models/BoltAPI/Bolt.dart';
 import '../Models/BoltAPI/BoltPrices.dart';
 import '../Models/BoltAPI/BoltTimes.dart';
+import '../Models/RideResult.dart';
 
 import 'package:flutter/material.dart';
 
@@ -27,6 +28,9 @@ class _ResultScreenState extends State<ResultScreen> {
   Bolt boltOpject = new Bolt();
   List<BoltPrices> boltPriceList = [];
   List<BoltTimes> boltTimeList = [];
+
+  // list to display result
+  List<RideResult> rideResultList = [];
 
   // Price Estimates for uber app
   void getUberPriceEstimates() async {
@@ -52,12 +56,49 @@ class _ResultScreenState extends State<ResultScreen> {
         .getTime(start_latitude, start_longitude);
   }
 
+  // join price list and time list
+  void joinList(var app_name, List priceList, List timeList) {
+    for (var i = 0; i < priceList.length; i++) {
+      for (var j = 0; j < timeList.length; j++) {
+        // check if product id identical
+        if (priceList[i].product_id == timeList[j].product_id) {
+          // create new rideResult object
+          RideResult rideResultObject = RideResult(app_name, priceList[i].product_id,
+              priceList[i].display_name,
+              priceList[i].estimate,
+              timeList[j].estimate);
+
+          // add objet to rideResultList
+          rideResultList.add(rideResultObject);
+
+          // remove object from uberTimeList
+          timeList.removeAt(j);
+        }
+      } // end for
+    } // end for
+  }
+
+  // for test
+  void printList() {
+    print(rideResultList.length);
+    for (var i = 0; i < rideResultList.length; i++) {
+      print(rideResultList[i].app_name + " " + rideResultList[i].product_id
+          + " " + rideResultList[i].estimate_price + " " + rideResultList[i].estimate_time.toString());
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     getUberPriceEstimates();
     getUberTimeEstimates();
     getBoltPriceEstimates();
     getBoltTimeEstimates();
+    joinList("Uber", uberPriceList, uberTimeList);
+    joinList("Bolt", boltPriceList, boltTimeList);
+
+    // for test
+    printList();
 
     return Scaffold(
       appBar: AppBar(

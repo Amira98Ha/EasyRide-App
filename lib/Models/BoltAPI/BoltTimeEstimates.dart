@@ -13,7 +13,7 @@ class BoltTimeEstimates {
 
   Future<List<BoltTimes>> getTime(var start_latitude, var start_longitude) async {
     // parsing json file
-    final timeFile = await rootBundle.loadString('json/UberTimeEstimates1.json');
+    final timeFile = await rootBundle.loadString('json/BoltTimeEstimates1.json');
     final timeJson =  jsonDecode(timeFile);
 
     // create list of BoltTimes
