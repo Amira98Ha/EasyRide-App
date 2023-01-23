@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:easy_ride_app/Views/MapScreen.dart';
+import 'package:easy_ride_app/Views/ResultScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_place/google_place.dart';
 import '../Models/MapsConstants.dart';
+import 'TapsScreen.dart';
 
 
 class SearchScreen extends StatefulWidget {
@@ -257,7 +259,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => MapScreen(), //RideResult Scree
+                            builder: (context) => TapsScreen(), //RideResult Scree
                           ),
                         );
                       }

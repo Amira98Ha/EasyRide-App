@@ -1,4 +1,5 @@
 import 'package:easy_ride_app/Views/SearchScreen.dart';
+import 'package:easy_ride_app/Views/TapsScreen.dart';
 import 'package:flutter/material.dart';
 
 import 'Views/MapScreen.dart';
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Easy Ride App',
-      home: ResultScreen(),
+      home: MapScreen(),
     );
   }
 }

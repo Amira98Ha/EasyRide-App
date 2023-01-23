@@ -19,6 +19,9 @@ class _ResultScreenState extends State<ResultScreen> {
   var end_latitude = 21.627725155960892;
   var end_longitude = 39.11108797417971;
 
+  // list to display result
+  List<RideResult> rideResultList = [];
+
   // for uber app
   Uber uberOpject = new Uber();
   List<UberPrices> uberPriceList = [];
@@ -29,8 +32,6 @@ class _ResultScreenState extends State<ResultScreen> {
   List<BoltPrices> boltPriceList = [];
   List<BoltTimes> boltTimeList = [];
 
-  // list to display result
-  List<RideResult> rideResultList = [];
 
   // Price Estimates for uber app
   void getUberPriceEstimates() async {
@@ -77,7 +78,6 @@ class _ResultScreenState extends State<ResultScreen> {
       } // end for
     } // end for
   }
-
   // for test
   void printList() {
     print(rideResultList.length);
@@ -90,35 +90,37 @@ class _ResultScreenState extends State<ResultScreen> {
 
   @override
   Widget build(BuildContext context) {
-    getUberPriceEstimates();
+    getUberPriceEstimates() ;
     getUberTimeEstimates();
-    getBoltPriceEstimates();
+    getBoltPriceEstimates() ;
     getBoltTimeEstimates();
+    print("This uberrrr");
     joinList("Uber", uberPriceList, uberTimeList);
     joinList("Bolt", boltPriceList, boltTimeList);
-
+    print("This bmooot");
     // for test
     printList();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Ride Result"),
-        backgroundColor: Colors.black,
-        titleTextStyle: TextStyle(fontSize: 20.0, fontFamily: "Brand Bold"),
-        centerTitle: true,
-      ),
       //Check if there is available rides or not
-      body: uberPriceList.length > 0
+      body: rideResultList.length > 0
           ? ListView.separated(
-              itemCount: boltPriceList.length,
+              itemCount: rideResultList.length,
               itemBuilder: (context, int index) {
                 return ListTile(
-                  leading: const CircleAvatar(
+                  //if app name == Bolt present bolt img
+                  leading:  rideResultList[index].app_name.toString() == "Bolt" ?
+                  const CircleAvatar(
                     radius: 23,
                     backgroundImage: AssetImage("assets/Bolt_Logo.png",),
+                  )
+                  //if app name == Uber present uber img
+                  : const CircleAvatar(
+                    radius: 23,
+                    backgroundImage: AssetImage("assets/Uber_Logo.png",),
                   ),
-                  title: Text(boltPriceList[index].display_name),
-                  trailing: Text("${boltPriceList[index].estimate} ${boltPriceList[index].currency_code}"),
+                  title: Text(rideResultList[index].app_name),
+                  trailing: Text("${rideResultList[index].estimate_price} SAR"),
                 );
               },
               separatorBuilder: (BuildContext context, int index) =>
