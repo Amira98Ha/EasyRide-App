@@ -70,7 +70,8 @@ class _ResultScreenState extends State<ResultScreen> {
           RideResult rideResultObject = RideResult(app_name, priceList[i].product_id,
               priceList[i].display_name,
               priceList[i].estimate,
-              timeList[j].estimate);
+              timeList[j].estimate,
+              priceList[i].low_estimate);
 
           // add objet to rideResultList
           rideResultList.add(rideResultObject);
@@ -90,16 +91,20 @@ class _ResultScreenState extends State<ResultScreen> {
     }
 
   }
-  void PriceCompare(){
+  void PriceCompare(List priceList,List timeList){
     //sort price ascending
     rideResultList.sort((a, b)=>a.estimate_price.compareTo(b.estimate_price));
+    //choose first index for cheapest
 
-      var CheapRide= rideResultList[0].estimate_price;
+      var CheapRide= rideResultList[0].low_estimate;
       for(var i = 0; i < rideResultList.length; i++){
+          if(rideResultList[i].low_estimate < CheapRide) {
+            //store the cheapest ride using its product it
+            CheapRide= rideResultList[i].product_id;
+          }
+          else if(rideResultList[i].low_estimate == CheapRide){
+            //check later
 
-          if(rideResultList[i].estimate_price < CheapRide) {
-            //sorted by price and choose first index for cheapest
-            CheapRide=rideResultList[i];
           }
         }
   }
@@ -110,7 +115,7 @@ class _ResultScreenState extends State<ResultScreen> {
     var FastestRide= rideResultList[0].estimate_time ;
     for(var i=0;i<rideResultList.length; i++){
       if(rideResultList[i].estimate_time > FastestRide){
-        FastestRide= rideResultList[i];
+        FastestRide= rideResultList[i].product_id;
 
       }
     }
