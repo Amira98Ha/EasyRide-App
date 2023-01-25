@@ -8,6 +8,9 @@ import '../Models/RideResult.dart';
 
 import 'package:flutter/material.dart';
 
+
+
+
 class ResultScreen extends StatefulWidget {
   @override
   _ResultScreenState createState() => _ResultScreenState();
@@ -87,6 +90,36 @@ class _ResultScreenState extends State<ResultScreen> {
     }
 
   }
+  void PriceCompare(){
+    //sort price ascending
+    rideResultList.sort((a, b)=>a.estimate_price.compareTo(b.estimate_price));
+
+      var CheapRide= rideResultList[0].estimate_price;
+      for(var i = 0; i < rideResultList.length; i++){
+
+          if(rideResultList[i].estimate_price < CheapRide) {
+            //sorted by price and choose first index for cheapest
+            CheapRide=rideResultList[i];
+          }
+        }
+  }
+
+  void TimeCompare(){
+    //sort time descending
+    rideResultList.sort((a, b)=>b.estimate_time.compareTo(a.estimate_time));
+    var FastestRide= rideResultList[0].estimate_time ;
+    for(var i=0;i<rideResultList.length; i++){
+      if(rideResultList[i].estimate_time > FastestRide){
+        FastestRide= rideResultList[i];
+
+      }
+    }
+
+  }
+
+  void OptimalChoice(){
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +127,7 @@ class _ResultScreenState extends State<ResultScreen> {
     getUberTimeEstimates();
     getBoltPriceEstimates() ;
     getBoltTimeEstimates();
+
     print("This uberrrr");
     joinList("Uber", uberPriceList, uberTimeList);
     joinList("Bolt", boltPriceList, boltTimeList);

@@ -8,7 +8,7 @@
       "high_estimate": 43,
       "low_estimate": 34,
       "duration": 1200,
-      "estimate": "34-43",
+      "estimate": 40,
       "currency_code": "SAR"
     },
     {
@@ -19,7 +19,7 @@
       "high_estimate": 52,
       "low_estimate": 33,
       "duration": 1200,
-      "estimate": "33-52",
+      "estimate": 40,
       "currency_code": "SAR"
     },
     {
@@ -30,7 +30,7 @@
       "high_estimate": 61,
       "low_estimate": 38,
       "duration": 1200,
-      "estimate": "38-61",
+      "estimate": 61,
       "currency_code": "SAR"
     },
     {
@@ -41,7 +41,7 @@
       "high_estimate": 76,
       "low_estimate": 42,
       "duration": 1200,
-      "estimate": "42-76",
+      "estimate": 76,
       "currency_code": "SAR"
     },
     {
@@ -52,7 +52,7 @@
       "high_estimate": 52,
       "low_estimate": 63,
       "duration": 1200,
-      "estimate": "63-52",
+      "estimate": 52,
       "currency_code": "SAR"
     },
     {
@@ -63,7 +63,7 @@
       "high_estimate": 41,
       "low_estimate": 25,
       "duration": 1200,
-      "estimate": "25-41",
+      "estimate": 41,
       "currency_code": "SAR"
     }
   ]
