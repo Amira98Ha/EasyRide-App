@@ -71,7 +71,8 @@ class _ResultScreenState extends State<ResultScreen> {
               priceList[i].display_name,
               priceList[i].estimate,
               timeList[j].estimate,
-              priceList[i].low_estimate);
+              priceList[i].low_estimate,
+              priceList[i].high_estimate);
 
           // add objet to rideResultList
           rideResultList.add(rideResultObject);

@@ -5,10 +5,10 @@
       "distance": 12.2,
       "display_name": "Economy",
       "product_id": "26546650-e557-4a7b-86e7-6a3942445248",
-      "high_estimate": 43,
-      "low_estimate": 34,
+      "high_estimate":50,
+      "low_estimate":43,
       "duration": 1200,
-      "estimate": 40,
+      "estimate": "43-50",
       "currency_code": "SAR"
     },
     {
@@ -16,10 +16,10 @@
       "distance": 12.2,
       "display_name": "Bolt",
       "product_id": "a1111c8c-c720-46c3-8534-2fcdd730040b",
-      "high_estimate": 52,
-      "low_estimate": 33,
+      "high_estimate": 62,
+      "low_estimate": 52,
       "duration": 1200,
-      "estimate": 40,
+      "estimate": "52-62",
       "currency_code": "SAR"
     },
     {
@@ -27,10 +27,10 @@
       "distance": 12.2,
       "display_name": "Comfort",
       "product_id": "821415d8-3bd5-4e27-9604-194e4359a450",
-      "high_estimate": 61,
-      "low_estimate": 38,
+      "high_estimate": 75,
+      "low_estimate": 61,
       "duration": 1200,
-      "estimate": 61,
+      "estimate": "61-75",
       "currency_code": "SAR"
     },
     {
@@ -38,10 +38,10 @@
       "distance": 12.2,
       "display_name": "VIP",
       "product_id": "57c0ff4e-1493-4ef9-a4df-6b961525cf93",
-      "high_estimate": 76,
-      "low_estimate": 42,
+      "high_estimate": 82,
+      "low_estimate": 76,
       "duration": 1200,
-      "estimate": 76,
+      "estimate": "76-82",
       "currency_code": "SAR"
     },
     {
@@ -49,10 +49,10 @@
       "distance": 12.2,
       "display_name": "XL",
       "product_id": "d4abaae7-f4d6-4152-91cc-77523e8165a5",
-      "high_estimate": 52,
-      "low_estimate": 63,
+      "high_estimate": 60,
+      "low_estimate": 52,
       "duration": 1200,
-      "estimate": 52,
+      "estimate": "52-60",
       "currency_code": "SAR"
     },
     {
@@ -60,10 +60,10 @@
       "distance": 12.2,
       "display_name": "Ladies",
       "product_id": "2832a1f5-cfc0-48bb-ab76-7ea7a62060e8",
-      "high_estimate": 41,
-      "low_estimate": 25,
+      "high_estimate": 48,
+      "low_estimate": 41,
       "duration": 1200,
-      "estimate": 41,
+      "estimate": "41-48",
       "currency_code": "SAR"
     }
   ]

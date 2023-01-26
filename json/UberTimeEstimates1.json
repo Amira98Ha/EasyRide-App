@@ -2,7 +2,7 @@
   "times": [
     {
       "localized_display_name": "Comfort",
-      "estimate": 60,
+      "estimate": 120,
       "display_name": "Comfort",
       "product_id": "26546650-e557-4a7b-86e7-6a3942445247"
     },
@@ -14,7 +14,7 @@
     },
     {
       "localized_display_name": "uberXL",
-      "estimate": 240,
+      "estimate": 300,
       "display_name": "uberXL",
       "product_id": "821415d8-3bd5-4e27-9604-194e4359a449"
     },
@@ -26,13 +26,13 @@
     },
     {
       "localized_display_name": "BLACK",
-      "estimate": 240,
+      "estimate": 720,
       "display_name": "BLACK",
       "product_id": "d4abaae7-f4d6-4152-91cc-77523e8165a4"
     },
     {
       "localized_display_name": "UberX Saver",
-      "estimate": 240,
+      "estimate": 360,
       "display_name": "UberX Saver",
       "product_id": "2832a1f5-cfc0-48bb-ab76-7ea7a62060e7"
     }
