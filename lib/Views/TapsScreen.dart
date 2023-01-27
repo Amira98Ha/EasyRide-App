@@ -4,7 +4,7 @@ import 'package:easy_ride_app/Views/ResultScreen.dart';
 import 'package:flutter/material.dart';
 
 class TapsScreen extends StatelessWidget {
-
+  const TapsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
