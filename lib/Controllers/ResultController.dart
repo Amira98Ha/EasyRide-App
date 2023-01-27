@@ -115,7 +115,7 @@ class ResultControllerState extends State<ResultController>
 
   }
 
-  static  OptimalChoice(){
+  static OptimalChoice(){
 
   }
 
