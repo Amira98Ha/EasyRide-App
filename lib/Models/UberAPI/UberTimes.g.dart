@@ -8,7 +8,7 @@ part of 'UberTimes.dart';
 
 UberTimes _$UberTimesFromJson(Map<String, dynamic> json) => UberTimes(
       localized_display_name: json['localized_display_name'] as String,
-      estimate: json['estimate'] as int,
+      estimate: json['estimate'] as num,
       display_name: json['display_name'] as String,
       product_id: json['product_id'] as String,
     );

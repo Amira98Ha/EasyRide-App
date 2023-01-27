@@ -4,7 +4,7 @@ part 'UberTimes.g.dart';
 @JsonSerializable(explicitToJson: true)
 class UberTimes {
   final String localized_display_name;
-  final int estimate;
+  final num estimate;
   final String display_name;
   final String product_id;
 

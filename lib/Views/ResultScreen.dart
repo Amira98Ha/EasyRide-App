@@ -9,8 +9,6 @@ import '../Models/RideResult.dart';
 import 'package:flutter/material.dart';
 
 
-
-
 class ResultScreen extends StatefulWidget {
   @override
   _ResultScreenState createState() => _ResultScreenState();
@@ -61,7 +59,7 @@ class _ResultScreenState extends State<ResultScreen> {
   }
 
   // join price list and time list
-  void joinList(var app_name, List priceList, List timeList) {
+   void joinList(var app_name, List priceList, List timeList) {
     for (var i = 0; i < priceList.length; i++) {
       for (var j = 0; j < timeList.length; j++) {
         // check if product id identical
@@ -83,41 +81,35 @@ class _ResultScreenState extends State<ResultScreen> {
       } // end for
     } // end for
   }
-  // for test
-  void printList() {
-    print(rideResultList.length);
-    for (var i = 0; i < rideResultList.length; i++) {
-      print(rideResultList[i].app_name + " " + rideResultList[i].product_id
-          + " " + rideResultList[i].estimate_price + " " + rideResultList[i].estimate_time.toString());
-    }
 
-  }
-  void PriceCompare(List priceList,List timeList){
+  //Sort list in term of cheapest
+   void priceCompare() async {
     //sort price ascending
     rideResultList.sort((a, b)=>a.estimate_price.compareTo(b.estimate_price));
+
     //choose first index for cheapest
+    // var cheapRide= rideResultList[0].low_estimate;
+    // for(var i = 0; i < rideResultList.length; i++){
+    //   if(rideResultList[i].low_estimate < cheapRide) {
+    //     //store the cheapest ride using its product it
+    //     cheapRide= rideResultList[i].product_id;
+    //     rideResultList.add(cheapRide);
+    //   }
+    //   else if(rideResultList[i].low_estimate == cheapRide){
+    //     //check later
+    //
+    //   }
+    // }
 
-      var CheapRide= rideResultList[0].low_estimate;
-      for(var i = 0; i < rideResultList.length; i++){
-          if(rideResultList[i].low_estimate < CheapRide) {
-            //store the cheapest ride using its product it
-            CheapRide= rideResultList[i].product_id;
-          }
-          else if(rideResultList[i].low_estimate == CheapRide){
-            //check later
-
-          }
-        }
   }
 
-  void TimeCompare(){
+  void timeCompare(){
     //sort time descending
     rideResultList.sort((a, b)=>b.estimate_time.compareTo(a.estimate_time));
-    var FastestRide= rideResultList[0].estimate_time ;
+    var fastestRide= rideResultList[0].estimate_time ;
     for(var i=0;i<rideResultList.length; i++){
-      if(rideResultList[i].estimate_time > FastestRide){
-        FastestRide= rideResultList[i].product_id;
-
+      if(rideResultList[i].estimate_time > fastestRide){
+        fastestRide= rideResultList[i].product_id;
       }
     }
 
@@ -131,43 +123,44 @@ class _ResultScreenState extends State<ResultScreen> {
   Widget build(BuildContext context) {
     getUberPriceEstimates() ;
     getUberTimeEstimates();
-    getBoltPriceEstimates() ;
+    getBoltPriceEstimates();
     getBoltTimeEstimates();
-
-    print("This uberrrr");
+    print("UBER display---------");
     joinList("Uber", uberPriceList, uberTimeList);
+    print("BOLT display---------");
     joinList("Bolt", boltPriceList, boltTimeList);
-    print("This bmooot");
-    // for test
-    printList();
+    print("PRICE display---------");
+    priceCompare();
 
     return Scaffold(
       //Check if there is available rides or not
       body: rideResultList.length > 0
           ? ListView.separated(
-              itemCount: rideResultList.length,
-              itemBuilder: (context, int index) {
-                return ListTile(
-                  //if app name == Bolt present bolt img
-                  leading:  rideResultList[index].app_name.toString() == "Bolt" ?
-                  const CircleAvatar(
-                    radius: 23,
-                    backgroundImage: AssetImage("assets/Bolt_Logo.png",),
-                  )
-                  //if app name == Uber present uber img
-                  : const CircleAvatar(
-                    radius: 23,
-                    backgroundImage: AssetImage("assets/Uber_Logo.png",),
-                  ),
-                  title: Text(rideResultList[index].app_name),
-                  trailing: Text("${rideResultList[index].estimate_price} SAR"),
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(
-                color: Colors.white,
-              ),
+        itemCount: rideResultList.length,
+        itemBuilder: (context, int index) {
+          num time = rideResultList[index].estimate_time/60;
+          return ListTile(
+            //if app name == Bolt present bolt img
+            leading:  rideResultList[index].app_name.toString() == "Bolt" ?
+            const CircleAvatar(
+              radius: 23,
+              backgroundImage: AssetImage("assets/Bolt_Logo.png",),
             )
+            //if app name == Uber present uber img
+                : const CircleAvatar(
+              radius: 23,
+              backgroundImage: AssetImage("assets/Uber_Logo.png",),
+            ),
+            title: Text(rideResultList[index].display_name),
+            subtitle: Text("${time.toInt()} min to arrive"),
+            trailing: Text("${rideResultList[index].estimate_price} SAR"),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) =>
+        const Divider(
+          color: Colors.white,
+        ),
+      )
           : const Center(child: Text("Sorry,There is no available rides right now :("),),
     );
   }

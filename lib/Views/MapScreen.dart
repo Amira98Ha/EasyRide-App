@@ -22,7 +22,7 @@ class _MapScreenState extends State<MapScreen> {
 
   var currentAddress = "";
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
+  static final CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(21.580529960492743, 39.18089494603335),
     zoom: 14.4746,
   );
@@ -103,7 +103,7 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     // getRide(context);
-    return new Scaffold(
+    return Scaffold(
       body: Stack(
         children: [
           //Google Map Widget
@@ -127,13 +127,13 @@ class _MapScreenState extends State<MapScreen> {
               left: 0.0,
               right: 0.0,
               bottom: 0.0,
-              //Anamition
+              //Animation
               child: AnimatedSize(
                 curve: Curves.bounceIn,
-                duration: new Duration(milliseconds: 160),
+                duration: const Duration(milliseconds: 160),
                 child: Container(
                   height: 300,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(18.0),
@@ -148,24 +148,24 @@ class _MapScreenState extends State<MapScreen> {
                         ),
                       ]),
 
-                  //Box Detiles Style
+                  //Box Details Style
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24.0, vertical: 18.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 6.0),
-                        Text(
+                        const SizedBox(height: 6.0),
+                        const Text(
                           "Hi there,",
                           style: TextStyle(fontSize: 12.0),
                         ),
-                        Text(
+                        const Text(
                           "Where to go?",
                           style: TextStyle(
                               fontSize: 20.0, fontFamily: "Brand Bold"),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
 
@@ -181,7 +181,7 @@ class _MapScreenState extends State<MapScreen> {
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(15.0),
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     color: Colors.grey,
                                     blurRadius: 11.0,
@@ -193,7 +193,7 @@ class _MapScreenState extends State<MapScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Row(
-                                  children: [
+                                  children: const [
                                     Icon(Icons.search, color: Colors.grey),
                                     SizedBox(width: 10.0),
                                     Text("Search Drop Off"),
@@ -204,14 +204,14 @@ class _MapScreenState extends State<MapScreen> {
                         ),
 
                         //Add Home BOX
-                        SizedBox(height: 24.0),
+                        const SizedBox(height: 24.0),
                         Row(
                           children: [
-                            Icon(Icons.home, color: Colors.grey),
-                            SizedBox(width: 12.0),
+                            const Icon(Icons.home, color: Colors.grey),
+                            const SizedBox(width: 12.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: const [
                                 Text("Add Home"),
                                 SizedBox(height: 4.0),
                                 Text(
@@ -225,20 +225,20 @@ class _MapScreenState extends State<MapScreen> {
                         ),
 
                         //Add Work BOX (Have the Same Row)
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
-                        Divider(),
-                        SizedBox(
+                        const Divider(),
+                        const SizedBox(
                           height: 16.0,
                         ),
                         Row(
                           children: [
-                            Icon(Icons.work, color: Colors.grey),
-                            SizedBox(width: 12.0),
+                            const Icon(Icons.work, color: Colors.grey),
+                            const SizedBox(width: 12.0),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: const [
                                 Text("Add Work"),
                                 SizedBox(height: 4.0),
                                 Text(

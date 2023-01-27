@@ -36,11 +36,13 @@ class TapsScreen extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: [
+            children: [
             ResultScreen(),
             FastestRideScreen(),
             CheapestRideScreen(),
+
           ],
+
         ),
       ),
     );
