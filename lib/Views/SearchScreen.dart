@@ -4,21 +4,25 @@ import 'package:easy_ride_app/Views/MapScreen.dart';
 import 'package:easy_ride_app/Views/ResultScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_place/google_place.dart';
 import '../Models/MapsConstants.dart';
 import 'TapsScreen.dart';
 
 
 class SearchScreen extends StatefulWidget {
-  SearchScreen({required this.currentAddress});
-  final String currentAddress;
+  SearchScreen({required this.currentPosition});
+  final Position currentPosition;
   @override
   _SearchScreenState createState() {
-    return _SearchScreenState(currentAddress);
+    return _SearchScreenState(currentPosition);
   }
 }
 class _SearchScreenState extends State<SearchScreen> {
-  final String currentAddress;
+  final Position currentPosition;
+  var currentAddress = "";
+
   final _startSearchFieldController = TextEditingController();
   final _endSearchFieldController = TextEditingController();
   TextEditingController _currentAddressController = new TextEditingController();
@@ -32,21 +36,38 @@ class _SearchScreenState extends State<SearchScreen> {
 
   //To track which text filed focus
   FocusNode startFocusNode = FocusNode();
-  FocusNode endFocusNode = FocusNode() ;
+  FocusNode endFocusNode = FocusNode();
 
-  _SearchScreenState(this.currentAddress);
+  //To be send to ResultScreen
+  var start_latitude;
+  var start_longitude;
+  var end_latitude;
+  var end_longitude;
+
+  _SearchScreenState(this.currentPosition);
+
   @override
   void initState() {
     super.initState();
-    _currentAddressController.text = currentAddress;
-    _startSearchFieldController.text = _currentAddressController.text;
+    getAddress().whenComplete(() {
+      _currentAddressController.text = currentAddress;
+      _startSearchFieldController.text = _currentAddressController.text;
+    });
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     startFocusNode.dispose();
     endFocusNode.dispose();
+  }
+
+  Future<void> getAddress() async {
+    // Convert position to address
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        currentPosition.latitude, currentPosition.longitude);
+    currentAddress = placemarks.reversed.last.street.toString();
   }
 
   //Method to auto Complete Search by using google_place package
@@ -103,50 +124,50 @@ class _SearchScreenState extends State<SearchScreen> {
                         Expanded(
                           child: Container(
                             decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(5.0),
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(5.0),
                             ),
                             child: Padding(
                               padding: EdgeInsets.all(3.0),
                               child: TextField(
                                 //CALL findPlace Method
-                               onChanged: (val) {
-                                 //Use debounce to be search more fast
-                                 if (_debounce?.isActive ?? false) _debounce!.cancel();
-                                 _debounce = Timer(const Duration(milliseconds: 1000), (){
-                                   //Start check of entry address
-                                   if(val.isNotEmpty){
-                                     //API Places
-                                     autoCompleteSearch(val);
-                                   }
-                                   else{
-                                     //Clear Result
-                                     setState(() {
-                                       predictions = [];
-                                       startPosition = null;
-                                     });
-                                   }
-                                 });
-                               },
+                                onChanged: (val) {
+                                  //Use debounce to be search more fast
+                                  if (_debounce?.isActive ?? false) _debounce!.cancel();
+                                  _debounce = Timer(const Duration(milliseconds: 1000), (){
+                                    //Start check of entry address
+                                    if(val.isNotEmpty){
+                                      //API Places
+                                      autoCompleteSearch(val);
+                                    }
+                                    else{
+                                      //Clear Result
+                                      setState(() {
+                                        predictions = [];
+                                        startPosition = null;
+                                      });
+                                    }
+                                  });
+                                },
                                 controller: _startSearchFieldController,
                                 focusNode: startFocusNode,
                                 decoration: InputDecoration(
-                                hintText: "PickUp Location",
-                                fillColor: Colors.grey[200],
-                                filled: true,
-                                border: InputBorder.none,
-                                isDense: true,
-                                contentPadding: EdgeInsets.all(10),
-                                suffixIcon: _startSearchFieldController.text.isNotEmpty ?
-                                IconButton(
-                                onPressed: () {
-                                setState(() {
-                                predictions = [];
-                                _startSearchFieldController.clear();});
-                                },
-                                icon: Icon(Icons.clear_outlined),
-                                )
-                              : null
+                                    hintText: "PickUp Location",
+                                    fillColor: Colors.grey[200],
+                                    filled: true,
+                                    border: InputBorder.none,
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(10),
+                                    suffixIcon: _startSearchFieldController.text.isNotEmpty ?
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          predictions = [];
+                                          _startSearchFieldController.clear();});
+                                      },
+                                      icon: Icon(Icons.clear_outlined),
+                                    )
+                                        : null
                                 ),
                               ),
                             ),
@@ -162,50 +183,50 @@ class _SearchScreenState extends State<SearchScreen> {
                         Expanded(
                           child: Container(
                             decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(5.0),
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(5.0),
                             ),
                             child: Padding(
                               padding: EdgeInsets.all(3.0),
                               child: TextField(
                                 //CALL findPlace Method
-                                 onChanged: (val) {
-                                   //Use debounce to be search more fast
-                                   if (_debounce?.isActive ?? false) _debounce!.cancel();
-                                   _debounce = Timer(const Duration(milliseconds: 1000), (){
-                                     //Start check of entry address
-                                     if(val.isNotEmpty){
-                                       //API Places
-                                       autoCompleteSearch(val);
-                                     }
-                                     else{
-                                       //Clear Result
-                                       setState(() {
-                                         predictions = [];
-                                         endPosition = null;
-                                       });
-                                     }
-                                   });
-                                 },
+                                onChanged: (val) {
+                                  //Use debounce to be search more fast
+                                  if (_debounce?.isActive ?? false) _debounce!.cancel();
+                                  _debounce = Timer(const Duration(milliseconds: 1000), (){
+                                    //Start check of entry address
+                                    if(val.isNotEmpty){
+                                      //API Places
+                                      autoCompleteSearch(val);
+                                    }
+                                    else{
+                                      //Clear Result
+                                      setState(() {
+                                        predictions = [];
+                                        endPosition = null;
+                                      });
+                                    }
+                                  });
+                                },
                                 controller: _endSearchFieldController,
                                 focusNode: endFocusNode,
                                 decoration: InputDecoration(
-                                hintText: "Where to?",
-                                fillColor: Colors.grey[200],
-                                filled: true,
-                                border: InputBorder.none,
-                                isDense: true,
-                                contentPadding: EdgeInsets.all(10),
-                                suffixIcon: _endSearchFieldController.text.isNotEmpty ?
-                                IconButton(
-                                  onPressed: () {
-                                  setState(() {
-                                  predictions = [];
-                                  _endSearchFieldController.clear();});
-                                  },
-                                   icon: Icon(Icons.clear_outlined),
-                                )
-                              : null
+                                    hintText: "Where to?",
+                                    fillColor: Colors.grey[200],
+                                    filled: true,
+                                    border: InputBorder.none,
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(10),
+                                    suffixIcon: _endSearchFieldController.text.isNotEmpty ?
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          predictions = [];
+                                          _endSearchFieldController.clear();});
+                                      },
+                                      icon: Icon(Icons.clear_outlined),
+                                    )
+                                        : null
                                 ),
                               ),
                             ),
@@ -252,6 +273,23 @@ class _SearchScreenState extends State<SearchScreen> {
                           //to remove predictions after selected
                           predictions = [];
                         });
+                      }
+                      // if start point = current location
+                      if (_startSearchFieldController.text == currentAddress && endPosition != null) {
+                        // start point
+                        start_latitude = currentPosition.latitude;
+                        start_longitude = currentPosition.longitude;
+                        // end point
+                        end_latitude = endPosition?.geometry?.location?.lat;
+                        end_longitude = endPosition?.geometry?.location?.lng;
+
+                        print('navigate');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TapsScreen(), //RideResult Scree
+                          ),
+                        );
                       }
                       //To check user selected all position before search
                       if (startPosition != null && endPosition != null) {

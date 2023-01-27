@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../Controllers/GeolocatorController.dart';
 import 'SearchScreen.dart';
 
 class MapScreen extends StatefulWidget {
@@ -20,39 +20,38 @@ class _MapScreenState extends State<MapScreen> {
   Set<Marker> markers = {};
   var geoLocator = Geolocator();
 
-  var currentAddress = "";
-
   static final CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(21.580529960492743, 39.18089494603335),
     zoom: 14.4746,
   );
 
   void locatePosition() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    currentPosition = position;
+    try {
+      // check location permissions
+      // get user current location
+      GeoLocatorController geoLocatorController = GeoLocatorController();
+      currentPosition = await geoLocatorController.determinePosition();
 
-    LatLng latLngPosition = LatLng(position.latitude, position.longitude);
+      LatLng latLngPosition = LatLng(currentPosition.latitude, currentPosition.longitude);
 
-    CameraPosition cameraPosition =
-        new CameraPosition(target: latLngPosition, zoom: 14);
-    newGoogleMapController
-        .animateCamera((CameraUpdate.newCameraPosition(cameraPosition)));
+      // change camera position to user location
+      CameraPosition cameraPosition =
+      new CameraPosition(target: latLngPosition, zoom: 14);
+      newGoogleMapController
+          .animateCamera((CameraUpdate.newCameraPosition(cameraPosition)));
 
-    markers.add(Marker(
-        markerId: const MarkerId('currentLocation'),
-        position: LatLng(position.latitude, position.longitude)));
+      // add marker
+      markers.add(Marker(
+          markerId: const MarkerId('currentLocation'),
+          position: LatLng(currentPosition.latitude, currentPosition.longitude)));
+    }
 
-    getAddress();
+    catch (error) {
+      print(error);
+      SystemNavigator.pop();
+    }
   }
 
-  void getAddress() async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-        currentPosition.latitude, currentPosition.longitude);
-    setState(() {
-      currentAddress = placemarks.reversed.last.street.toString();
-    });
-  }
 
   //
   //
@@ -175,7 +174,7 @@ class _MapScreenState extends State<MapScreen> {
                             Navigator.push(
                             context,
                             MaterialPageRoute(
-                            builder: (context) => SearchScreen(currentAddress: currentAddress)));
+                            builder: (context) => SearchScreen(currentPosition: currentPosition)));
                           },
                           child: Container(
                               decoration: BoxDecoration(

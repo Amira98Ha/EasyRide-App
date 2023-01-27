@@ -77,6 +77,9 @@ class _ResultScreenState extends State<ResultScreen> {
 
           // remove object from uberTimeList
           timeList.removeAt(j);
+
+          // exit timeList
+          break;
         }
       } // end for
     } // end for
