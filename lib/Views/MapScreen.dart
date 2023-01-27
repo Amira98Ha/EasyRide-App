@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -40,13 +39,16 @@ class _MapScreenState extends State<MapScreen> {
       newGoogleMapController
           .animateCamera((CameraUpdate.newCameraPosition(cameraPosition)));
 
-      // add marker
-      markers.add(Marker(
-          markerId: const MarkerId('currentLocation'),
-          position: LatLng(currentPosition.latitude, currentPosition.longitude)));
+      setState(() {
+        // add marker
+        markers.add(Marker(
+            markerId: const MarkerId('currentLocation'),
+            position: LatLng(currentPosition.latitude, currentPosition.longitude)));
+      });
     }
 
     catch (error) {
+      // close app
       print(error);
       SystemNavigator.pop();
     }
@@ -172,9 +174,9 @@ class _MapScreenState extends State<MapScreen> {
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                            builder: (context) => SearchScreen(currentPosition: currentPosition)));
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SearchScreen(currentPosition: currentPosition)));
                           },
                           child: Container(
                               decoration: BoxDecoration(
