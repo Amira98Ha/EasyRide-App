@@ -7,7 +7,6 @@ import '../Models/BoltAPI/BoltTimes.dart';
 import '../Models/RideResult.dart';
 
 import 'package:flutter/material.dart';
-import '../Controllers/ResultController.dart';
 
 class CheapestRideScreen  extends StatefulWidget {
 
