@@ -183,7 +183,7 @@ class _ResultScreenState extends State<ResultScreen> {
                 ),
               )
                   : const Center(
-                child: Text("Sorry,There is no available rides right now :("),),
+                child: Text("Sorry,There is no available rides right now"),),
             );
           } // else
         } // else
