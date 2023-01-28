@@ -278,41 +278,41 @@ class _SearchScreenState extends State<SearchScreen> {
                   },
                 );
               }),
-          ElevatedButton(
+           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  minimumSize: Size(327, 50),
-                  primary: Colors.black,
-                  elevation: 0,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(50),
-                    ),
-                  )
+                minimumSize: Size(327, 50),
+                primary: Colors.black,
+                elevation: 0,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(50),
+                  ),
+                )
               ),
 
-              onPressed: (){
-                // setState(() {
-                // if (_startSearchFieldController.text == currentAddress && endPosition == null ) {
-                //   //Next Page
-                //   print(" end point -NULL");
-                //   showDialog(context:context, builder: (context){
-                //     return AlertDialog(
-                //       title:Text("Error Message"),
-                //       titleTextStyle: TextStyle(color: Colors.red, fontWeight:FontWeight.bold, fontSize: 20 ),
-                //       content: Text("Please, Enter start-point and end-point location"),
-                //       actions: [
-                //         TextButton(onPressed: (){
-                //           Navigator.pop(context);
-                //         }, child: Text("ok")),
-                //       ],
-                //     );
-                //   });
-                //
-                // }
-                // });
+                onPressed: (){
+                  // setState(() {
+                  // if (_startSearchFieldController.text == currentAddress && endPosition == null ) {
+                  //   //Next Page
+                  //   print(" end point -NULL");
+                  //   showDialog(context:context, builder: (context){
+                  //     return AlertDialog(
+                  //       title:Text("Error Message"),
+                  //       titleTextStyle: TextStyle(color: Colors.red, fontWeight:FontWeight.bold, fontSize: 20 ),
+                  //       content: Text("Please, Enter start-point and end-point location"),
+                  //       actions: [
+                  //         TextButton(onPressed: (){
+                  //           Navigator.pop(context);
+                  //         }, child: Text("ok")),
+                  //       ],
+                  //     );
+                  //   });
+                  //
+                  // }
+                  // });
 
-                // if start point = current location
-                if (_startSearchFieldController.text == currentAddress && endPosition != null ) {
+                  // if start point = current location
+                  if (_startSearchFieldController.text == currentAddress && endPosition != null ) {
                   // start point
                   start_latitude = currentPosition.latitude;
                   start_longitude = currentPosition.longitude;
@@ -323,69 +323,69 @@ class _SearchScreenState extends State<SearchScreen> {
                   //Next Page
                   print("start point = current location");
                   Navigator.push( context,  MaterialPageRoute(
-                    builder: (context) => const TapsScreen(), //RideResult Scree
+                  builder: (context) => const TapsScreen(), //RideResult Scree
                   ),);
-                }
+                  }
 
-                //To check all position NOT NULL before search AND start point = current location
-                else if (_startSearchFieldController.text == currentAddress && endPosition == null ){
-                  //Next Page
-                  print("start point OR end pont -NULL");
-                  showDialog(context:context, builder: (context){
-                    return AlertDialog(
-                      title:Text("Error Message"),
-                      titleTextStyle: TextStyle(color: Colors.red, fontWeight:FontWeight.bold, fontSize: 20 ),
-                      content: Text("Please, Enter start-point and end-point location"),
-                      actions: [
-                        TextButton(onPressed: (){
-                          Navigator.pop(context);
-                        }, child: Text("ok")),
-                      ],
-                    );
-                  });
+                  //To check all position NOT NULL before search AND start point = current location
+                  else if (_startSearchFieldController.text == currentAddress && endPosition == null ){
+                      //Next Page
+                      print("start point OR end pont -NULL");
+                      showDialog(context:context, builder: (context){
+                        return AlertDialog(
+                          title:Text("Error Message"),
+                          titleTextStyle: TextStyle(color: Colors.red, fontWeight:FontWeight.bold, fontSize: 20 ),
+                          content: Text("Please, Enter start-point and end-point location"),
+                          actions: [
+                            TextButton(onPressed: (){
+                              Navigator.pop(context);
+                            }, child: Text("ok")),
+                          ],
+                        );
+                      });
 
-                }
+                    }
 
-                //To check all position NOT NULL before search
-                else if (startPosition == null || endPosition == null){
-                  //Next Page
-                  print("start point OR end pont -NULL---");
-                  showDialog(context:context, builder: (context){
-                    return AlertDialog(
-                      title:Text("Error Message"),
-                      titleTextStyle: TextStyle(color: Colors.red, fontWeight:FontWeight.bold, fontSize: 20 ),
-                      content: Text("Please, Enter start-point and end-point location"),
-                      actions: [
-                        TextButton(onPressed: (){
-                          Navigator.pop(context);
-                        }, child: Text("ok")),
-                      ],
-                    );
-                  });
-                }
-
-
-                //To check user selected all position before search
-                if (startPosition != null && endPosition != null) {
-                  // start point
-                  start_latitude = currentPosition.latitude;
-                  start_longitude = currentPosition.longitude;
-                  // end point
-                  end_latitude = endPosition?.geometry?.location?.lat;
-                  end_longitude = endPosition?.geometry?.location?.lng;
-
-                  //Next Page
-                  print("start point and end pont NOT NULL");
-                  Navigator.push( context,  MaterialPageRoute(
-                    builder: (context) => const TapsScreen(), //RideResult Scree
-                  ),);
-                }
+                  //To check all position NOT NULL before search
+                   else if (startPosition == null || endPosition == null){
+                    //Next Page
+                    print("start point OR end pont -NULL---");
+                    showDialog(context:context, builder: (context){
+                      return AlertDialog(
+                        title:Text("Error Message"),
+                        titleTextStyle: TextStyle(color: Colors.red, fontWeight:FontWeight.bold, fontSize: 20 ),
+                        content: Text("Please, Enter start-point and end-point location"),
+                        actions: [
+                          TextButton(onPressed: (){
+                            Navigator.pop(context);
+                          }, child: Text("ok")),
+                        ],
+                      );
+                    });
+                  }
 
 
-              }, //onPressed
+                  //To check user selected all position before search
+                  if (startPosition != null && endPosition != null) {
+                    // start point
+                    start_latitude = currentPosition.latitude;
+                    start_longitude = currentPosition.longitude;
+                    // end point
+                    end_latitude = endPosition?.geometry?.location?.lat;
+                    end_longitude = endPosition?.geometry?.location?.lng;
 
-              child: const Text("Search" , style: TextStyle(fontWeight: FontWeight.bold),)
-          ),
+                    //Next Page
+                    print("start point and end pont NOT NULL");
+                    Navigator.push( context,  MaterialPageRoute(
+                      builder: (context) => const TapsScreen(), //RideResult Scree
+                    ),);
+                  }
+
+
+                }, //onPressed
+
+                child: const Text("Search" , style: TextStyle(fontWeight: FontWeight.bold),)
+            ),
 
         ],
 
@@ -395,3 +395,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
 }
+
+
+
+
