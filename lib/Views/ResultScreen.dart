@@ -121,16 +121,7 @@ class _ResultScreenState extends State<ResultScreen> {
 
   }
 
-  void timeCompare() {
-    //sort time descending
-    rideResultList.sort((a, b) => b.estimate_time.compareTo(a.estimate_time));
-    var fastestRide = rideResultList[0].estimate_time;
-    for (var i = 0; i < rideResultList.length; i++) {
-      if (rideResultList[i].estimate_time > fastestRide) {
-        fastestRide = rideResultList[i].product_id;
-      }
-    }
-  }
+
 
   void OptimalChoice() {
 

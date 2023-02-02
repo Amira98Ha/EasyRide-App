@@ -8,6 +8,7 @@ import '../Models/RideResult.dart';
 
 import 'package:flutter/material.dart';
 
+
 class CheapestRideScreen  extends StatefulWidget {
 
 
@@ -127,6 +128,7 @@ class CheapestRideState extends State<CheapestRideScreen>
 
 
 
+
   @override
   Widget build(BuildContext context) {
 
@@ -180,4 +182,4 @@ class CheapestRideState extends State<CheapestRideScreen>
     );
   } // build
 
-} // ResultScreen
+} // cheapestScreen

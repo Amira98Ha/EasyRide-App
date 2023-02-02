@@ -8,6 +8,7 @@ import '../Models/BoltAPI/BoltTimes.dart';
 import '../Models/RideResult.dart';
 import 'package:flutter/material.dart';
 
+
 class FastestRideScreen  extends StatefulWidget
 {
   FastestRideScreenState createState()=> FastestRideScreenState();
