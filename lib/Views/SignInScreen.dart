@@ -80,11 +80,4 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
 }
-/*
-//sign out 
-FirebaseAuth.instance.signOut().then((value){
-print("signed out");
-  Navigator.push(context, MaterialPageRoute(builder: (context)=> SignInScreen()));
 
-})
- */

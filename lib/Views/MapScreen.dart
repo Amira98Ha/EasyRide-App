@@ -67,7 +67,16 @@ Widget buildMenuItems(BuildContext context) => Container(
       ListTile(
         leading: const Icon(Icons.exit_to_app),
         title: const Text("Logout"),
-        onTap: (){},
+        onTap: (){
+          /*
+//sign out
+FirebaseAuth.instance.signOut().then((value){
+print("signed out");
+  Navigator.push(context, MaterialPageRoute(builder: (context)=> SignInScreen()));
+
+})
+ */
+        },
       ),
   ],
     ),
