@@ -9,42 +9,107 @@ class TapsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Ride Result"),
+          title: Text("Rides Result"),
           backgroundColor: Colors.black,
           titleTextStyle: TextStyle(fontSize: 20.0, fontFamily: "Brand Bold"),
           centerTitle: true,
-          bottom: const TabBar(
-            tabs: [
+          bottom: TabBar(
+            indicatorColor: Colors.white,
+            tabs: <Widget>[
               //1-tap
               Tab(
-                text: "Optimal Choice",
-              ),
-
-              //2-tap
-              Tab(
-                text: "Fastest",
+                child: Text(
+                  "Cheapest",
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontFamily: "Brand Bold",
+                  ),
+                ),
               ),
 
               //3-tap
               Tab(
-                text: "Cheapest",
+                child: Text(
+                  "Fastest",
+                  style: TextStyle(fontSize: 18.0, fontFamily: "Brand Bold"),
+                ),
               ),
             ],
           ),
         ),
         body: TabBarView(
-            children: [
-            ResultScreen(),
-            FastestRideScreen(),
+          children: [
             CheapestRideScreen(),
-
+            FastestRideScreen(),
           ],
-
         ),
       ),
     );
   }
+
+//
+//
+//
+//   TopTaps() {
+//     return DefaultTabController(
+//       length: 4,
+//       child: Scaffold(
+//         appBar: PreferredSize(
+//           preferredSize: Size.fromHeight(50),
+//           child: AppBar(
+//             backgroundColor: Colors.white,
+//             bottom: TabBar(
+//               indicatorColor: Colors.black,
+//               tabs: <Widget>[
+//                 //1- Tap
+//                 Tab(
+//                   child: Text(
+//                     "All",
+//                     style: TextStyle(color: Colors.black),
+//                   ),
+//                 ),
+//
+//                 //1- Tap
+//                 Tab(
+//                   child: Text(
+//                     "Standard",
+//                     style: TextStyle(color: Colors.black),
+//                   ),
+//                 ),
+//
+//                 //1- Tap
+//                 Tab(
+//                   child: Text(
+//                     "Family",
+//                     style: TextStyle(color: Colors.black),
+//                   ),
+//                 ),
+//
+//                 //1- Tap
+//                 Tab(
+//                   child: Text(
+//                     "Luxury",
+//                     style: TextStyle(color: Colors.black),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//         body: TabBarView(
+//           children: [
+//             CheapestRideScreen(),
+//             FastestRideScreen(),
+//             CheapestRideScreen(),
+//             FastestRideScreen(),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+
 }
+

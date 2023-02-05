@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:easy_ride_app/Views/Account.dart';
+import 'package:easy_ride_app/Views/ResultScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -166,7 +167,6 @@ class _MapScreenState extends State<MapScreen> {
     // getRide(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
         backgroundColor: Colors.blueGrey,
       ),
       drawer: NavigationDrawer(),
