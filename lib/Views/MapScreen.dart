@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:easy_ride_app/Views/Account.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,7 +11,66 @@ import 'SearchScreen.dart';
 class MapScreen extends StatefulWidget {
   @override
   _MapScreenState createState() => _MapScreenState();
+
 }
+class NavigationDrawer extends StatelessWidget {
+   NavigationDrawer({Key? key}) : super(key: key);
+
+   @override
+   Widget build(BuildContext context) {
+     return Drawer(
+       child: SingleChildScrollView(
+         child: Column(
+           crossAxisAlignment: CrossAxisAlignment.stretch,
+           children: <Widget>[
+             buildHeader(context),
+             buildMenuItems(context),
+           ],
+         ),
+       ),
+     );
+
+   }
+}
+
+Widget buildHeader(BuildContext context) => Container(
+  padding: EdgeInsets.only(
+    top: MediaQuery.of(context).padding.top,
+  ),
+);
+
+Widget buildMenuItems(BuildContext context) => Container(
+    padding: const EdgeInsets.all(35),
+    child: Wrap(
+  runSpacing: 16,
+    children: [
+    ListTile(
+      leading: const Icon(Icons.home_outlined),
+      title: const Text("Home"),
+      onTap: (){Navigator.pop(context);
+      Navigator.of(context).push(MaterialPageRoute(builder:
+          (context) => MapScreen()
+      ));},
+    ),
+    ListTile(
+      leading: const Icon(Icons.account_circle_outlined ),
+      title: const Text("My Account"),
+      onTap: () {
+        Navigator.pop(context);
+        Navigator.of(context).push(MaterialPageRoute(builder:
+            (context) => MyAccount()
+        ));
+      }
+    ),
+    const Divider(color: Colors.black),
+      ListTile(
+        leading: const Icon(Icons.exit_to_app),
+        title: const Text("Logout"),
+        onTap: (){},
+      ),
+  ],
+    ),
+);
 
 class _MapScreenState extends State<MapScreen> {
   Completer<GoogleMapController> _controller = Completer();
@@ -105,6 +165,11 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     // getRide(context);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(''),
+        backgroundColor: Colors.blueGrey,
+      ),
+      drawer: NavigationDrawer(),
       body: Stack(
         children: [
           //Google Map Widget
@@ -261,3 +326,4 @@ class _MapScreenState extends State<MapScreen> {
     );
   } //Widget
 } //_MapScreenState
+
