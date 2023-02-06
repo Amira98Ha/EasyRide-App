@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:easy_ride_app/Views/Account.dart';
+import 'package:easy_ride_app/Views/Profile.dart';
 import 'package:easy_ride_app/Views/ResultScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -58,11 +58,11 @@ Widget buildMenuItems(BuildContext context) => Container(
     ),
     ListTile(
       leading: const Icon(Icons.account_circle_outlined ),
-      title: const Text("My Account"),
+      title: const Text("My Profile"),
       onTap: () {
         Navigator.pop(context);
         Navigator.of(context).push(MaterialPageRoute(builder:
-            (context) => MyAccount()
+            (context) => MyProfile()
         ));
       }
     ),
