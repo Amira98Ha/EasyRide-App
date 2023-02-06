@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:easy_ride_app/Views/Account.dart';
 import 'package:easy_ride_app/Views/ResultScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../Controllers/GeolocatorController.dart';
 import 'SearchScreen.dart';
+import 'SignInScreen.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -33,13 +35,14 @@ class NavigationDrawer extends StatelessWidget {
 
    }
 }
-
+//sidebar Details Style
 Widget buildHeader(BuildContext context) => Container(
   padding: EdgeInsets.only(
     top: MediaQuery.of(context).padding.top,
   ),
 );
 
+//sidebar items
 Widget buildMenuItems(BuildContext context) => Container(
     padding: const EdgeInsets.all(35),
     child: Wrap(
@@ -64,18 +67,16 @@ Widget buildMenuItems(BuildContext context) => Container(
       }
     ),
     const Divider(color: Colors.black),
+
       ListTile(
         leading: const Icon(Icons.exit_to_app),
         title: const Text("Logout"),
         onTap: (){
-          /*
-//sign out
-FirebaseAuth.instance.signOut().then((value){
-print("signed out");
-  Navigator.push(context, MaterialPageRoute(builder: (context)=> SignInScreen()));
-
-})
- */
+          FirebaseAuth.instance.signOut().then(
+              (value){
+              print("signed out");
+               Navigator.push(context, MaterialPageRoute(builder: (context)=> SignInScreen()));
+});
         },
       ),
   ],
@@ -176,7 +177,8 @@ class _MapScreenState extends State<MapScreen> {
     // getRide(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: Colors.black,
+        elevation: 1,
       ),
       drawer: NavigationDrawer(),
       body: Stack(
