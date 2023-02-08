@@ -59,7 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 20,
               ),
               signInSignUpButton(context, false, (){
-                FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailTextController.text,
+               FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailTextController.text,
                     password: _passwordTextController.text)
                     .then((value){
                       print("Created new account");

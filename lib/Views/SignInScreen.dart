@@ -32,7 +32,7 @@ class _SignInScreenState extends State<SignInScreen> {
           SizedBox(
             height: 30,
           ),
-          reusableTextField("Enter UserName", Icons.person_outline, false,
+          reusableTextField("Enter your Email", Icons.person_outline, false,
               _emailTextController),
           SizedBox(
             height: 30,
@@ -47,9 +47,19 @@ class _SignInScreenState extends State<SignInScreen> {
                 .then((value) {
               Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen()));
             }).onError((error, stackTrace) {
-              print("Error ${error.toString()}");
             });
-
+            //my code
+           /* if(_emailTextController==null){
+              AlertDialog(
+                  title:Text("Error Message"),
+            titleTextStyle: TextStyle(color: Colors.red, fontWeight:FontWeight.bold, fontSize: 20 ),
+            content: Text("Please, Enter Valid Email and Password"),
+            actions: [
+            TextButton(onPressed: (){
+            Navigator.pop(context);
+            }, child: Text("ok")),
+            ],);
+            }*/
           }),
           signUpOption()
         ],

@@ -1,9 +1,30 @@
 import 'package:easy_ride_app/Views/MapScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 
-class MyProfile extends StatelessWidget{
+class MyProfile extends StatefulWidget {
 
-  MyProfile({Key? key}) : super(key: key);
+  @override
+  _editProfileState createState()=> _editProfileState();
+}
+class _editProfileState extends State<MyProfile>{
+
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+
+
+  saveProfile() async {
+
+
+
+      FirebaseAuth.instance.userChanges();
+      //DatabaseServices.updateUserData(user);
+
+    }
+
+
+
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -138,9 +159,26 @@ class MyProfile extends StatelessWidget{
                         borderRadius: BorderRadius.circular(20)
                     ),
                    ),
-                    child: Text('Save',
-                    style: TextStyle(fontSize: 15,letterSpacing: 2,
-                        color: Colors.white),),
+                    child: Column(
+                    children: [
+                      GestureDetector(
+                      onTap: saveProfile,
+                      child: Container(
+                        width: 100,
+                        height: 35,
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+
+                        ),
+                        child: Text('Save',
+                          style: TextStyle(fontSize: 15,letterSpacing: 2,
+                              color: Colors.white),),
+
+                      )
+                      ) ],
+
+                    )
                   )
                 ],
 
