@@ -25,46 +25,36 @@ class _SignInScreenState extends State<SignInScreen> {
       child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.fromLTRB(
-          20, MediaQuery.of(context).size.height*0.2, 20, 0),
-      child: Column(
-        children:<Widget> [
-          logoWidget("assets/car-app-icon.webp"),
-          SizedBox(
-            height: 30,
+              20, MediaQuery.of(context).size.height*0.2, 20, 0),
+          child: Column(
+            children:<Widget> [
+              logoWidget("assets/car-app-icon.webp"),
+              SizedBox(
+                height: 30,
+              ),
+              reusableTextField("Enter UserName", Icons.person_outline, false,
+                  _emailTextController),
+              SizedBox(
+                height: 30,
+              ),
+              reusableTextField("Enter Password", Icons.lock_outline, true,
+                  _passwordTextController),
+              SizedBox(
+                height: 30,
+              ),
+              signInSignUpButton(context, true, () {
+                FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailTextController.text, password: _passwordTextController.text)
+                    .then((value) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen()));
+                }).onError((error, stackTrace) {
+                  print("Error ${error.toString()}");
+                });
+
+              }),
+              signUpOption()
+            ],
           ),
-          reusableTextField("Enter your Email", Icons.person_outline, false,
-              _emailTextController),
-          SizedBox(
-            height: 30,
-          ),
-          reusableTextField("Enter Password", Icons.lock_outline, true,
-              _passwordTextController),
-          SizedBox(
-            height: 30,
-          ),
-          signInSignUpButton(context, true, () {
-            FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailTextController.text, password: _passwordTextController.text)
-                .then((value) {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen()));
-            }).onError((error, stackTrace) {
-            });
-            //my code
-           /* if(_emailTextController==null){
-              AlertDialog(
-                  title:Text("Error Message"),
-            titleTextStyle: TextStyle(color: Colors.red, fontWeight:FontWeight.bold, fontSize: 20 ),
-            content: Text("Please, Enter Valid Email and Password"),
-            actions: [
-            TextButton(onPressed: (){
-            Navigator.pop(context);
-            }, child: Text("ok")),
-            ],);
-            }*/
-          }),
-          signUpOption()
-        ],
-      ),
-      ),) ,
+        ),) ,
     ) ,);
   }
 
@@ -75,7 +65,7 @@ class _SignInScreenState extends State<SignInScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text("Don't have account?",
-              style: TextStyle(color: Colors.black)),
+            style: TextStyle(color: Colors.black)),
         GestureDetector(
           onTap: (){
             Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpScreen()));
@@ -90,4 +80,10 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
 }
+/*
+//sign out
+FirebaseAuth.instance.signOut().then((value){
+print("signed out");
+  Navigator.push(context, MaterialPageRoute(builder: (context)=> SignInScreen()));
 
+ */

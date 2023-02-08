@@ -47,15 +47,13 @@ dependencies:
   google_place: ^0.4.7
   geolocator: ^9.0.2
   geocoding: ^2.0.5
-  location: ^4.4.0
   http: ^0.13.5
   firebase_core: ^2.4.1
   firebase_auth: ^4.2.5
   cloud_firestore: ^4.3.1
 
 google_maps_flutter: ^2.0.3
-location: ^4.1.1
-
+location: ^4.4.0
 
 
 dev_dependencies:
