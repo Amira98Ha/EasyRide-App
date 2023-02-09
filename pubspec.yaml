@@ -1,4 +1,4 @@
-name: easy_ride_app
+name: Easy_Ride
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -33,6 +33,14 @@ dependencies:
     sdk: flutter
   collection: any
 
+  flutter_launcher_icons: "^0.9.0"
+
+flutter_icons:
+  image_path: "icon/icon.png"
+  android: true
+  ios: true
+  # optionally, as transparency is not allowed on app store
+  # remove_alpha_ios: true
 
 
 
@@ -88,6 +96,7 @@ flutter:
   assets:
     - json/
     - assets/
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
