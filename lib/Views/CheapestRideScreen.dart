@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import '../Models/UberAPI/Uber.dart';
 import '../Models/UberAPI/UberPrices.dart';
 import '../Models/UberAPI/UberTimes.dart';
@@ -13,6 +15,8 @@ class CheapestRideScreen extends StatefulWidget {
 }
 
 class CheapestRideState extends State<CheapestRideScreen> {
+  late Future<void> _future;
+
   var start_latitude = 21.580948130893006;
   var start_longitude = 39.1806807119387;
   var end_latitude = 21.627725155960892;
@@ -20,6 +24,7 @@ class CheapestRideState extends State<CheapestRideScreen> {
 
   // list to display result
   List<RideResult> rideResultList = [];
+  var optimalChoiceId = "";
 
   // for uber app
   Uber uberObject = new Uber();
@@ -31,6 +36,12 @@ class CheapestRideState extends State<CheapestRideScreen> {
   List<BoltPrices> boltPriceList = [];
   List<BoltTimes> boltTimeList = [];
 
+  @override
+  void initState() {
+    _future = searchRides();
+    super.initState();
+  }
+
   Future<void> searchRides() async {
     await getUberPriceEstimates();
     await getUberTimeEstimates();
@@ -41,6 +52,7 @@ class CheapestRideState extends State<CheapestRideScreen> {
     print("BOLT display---------");
     joinList("Bolt", boltPriceList, boltTimeList);
     print("PRICE display---------");
+    optimalChoice();
     priceCompare();
   }
 
@@ -97,6 +109,40 @@ class CheapestRideState extends State<CheapestRideScreen> {
     } // end for
   }
 
+  void optimalChoice() async {
+    //sort time descending
+    rideResultList.sort((a, b) => a.estimate_time.compareTo(b.estimate_time));
+    // get less time
+    int lessTime = rideResultList[0].estimate_time;
+
+    //sort price ascending
+    rideResultList.sort((a, b) => a.estimate_price.compareTo(b.estimate_price));
+    // get less price
+    int lessPrice = rideResultList[0].low_estimate;
+
+    optimalChoiceId = rideResultList[0].product_id;
+    double lessDistance = await calculateDistance(rideResultList[0].low_estimate, lessPrice,
+        rideResultList[0].estimate_time, lessTime);
+
+
+    for (var i = 0; i < rideResultList.length; i++) {
+      double distance = await calculateDistance(rideResultList[i].low_estimate, lessPrice,
+          rideResultList[i].estimate_time, lessTime);
+
+      if (distance < lessDistance) {
+        lessDistance = distance;
+        optimalChoiceId = rideResultList[i].product_id;
+      }
+    }
+
+    print("optimalChoiceId = " + optimalChoiceId);
+  }
+
+  Future<double> calculateDistance(int x1, int x2, int y1, int y2) async {
+    // Distance Between Two Points
+    return sqrt(pow((x2 - x1),2) + pow((y2 - y1),2));
+  }
+
   //Sort list in term of cheapest
   void priceCompare() async {
     //sort price ascending
@@ -106,7 +152,7 @@ class CheapestRideState extends State<CheapestRideScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
-      future: searchRides(), // function to search for rides
+      future: _future, // function to search for rides
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         // if searchRides() has not finish
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -206,7 +252,12 @@ class CheapestRideState extends State<CheapestRideScreen> {
                         ),
                   title: Text(rideResultList[index].display_name),
                   subtitle: Text("${time.toInt()} min to arrive"),
-                  trailing: Text("${rideResultList[index].estimate_price} SAR"),
+                  trailing: rideResultList[index].product_id == optimalChoiceId ?
+                    Text("${rideResultList[index].estimate_price} SAR\nOptimal choice")
+                        : Text("${rideResultList[index].estimate_price} SAR"),
+
+                  // Display optimal choice
+                  tileColor: rideResultList[index].product_id == optimalChoiceId ? Colors.grey : null,
                 );
               },
               // separatorBuilder: (BuildContext context, int index) =>
