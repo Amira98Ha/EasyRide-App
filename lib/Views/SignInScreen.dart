@@ -28,7 +28,7 @@ class _SignInScreenState extends State<SignInScreen> {
               20, MediaQuery.of(context).size.height*0.2, 20, 0),
           child: Column(
             children:<Widget> [
-              logoWidget("assets/car-app-icon.webp"),
+              logoWidget("assets/logo1-ai.png"),
               SizedBox(
                 height: 30,
               ),
