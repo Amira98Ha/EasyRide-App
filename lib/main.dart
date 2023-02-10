@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'Views/MapScreen.dart';
 import 'Views/ResultScreen.dart';
 import 'Views/SignInScreen.dart';
+import 'Views/login_signup.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Easy Ride App',
-      home: MapScreen(),
+      home: LoginSignUp(),
     );
   }
 }
