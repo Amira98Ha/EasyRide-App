@@ -306,7 +306,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   //Next Page
                   print("start point = current location and end point NOT NULL");
                   Navigator.push( context,  MaterialPageRoute(
-                  builder: (context) => const TapsScreen(), //RideResult Screen
+                  builder: (context) => TapsScreen(), //RideResult Screen
                   ),);
                   }
 
@@ -357,7 +357,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     //Next Page
                     print("start point and end pont NOT NULL");
                     Navigator.push( context,  MaterialPageRoute(
-                      builder: (context) => const TapsScreen(), //RideResult Scree
+                      builder: (context) => TapsScreen(), //RideResult Scree
                     ),);
                   }
 
