@@ -13,14 +13,43 @@ class _editProfileState extends State<MyProfile>{
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
+  String userName = "";
+  String email = "";
+  String password = "";
+  String PhoneNumber = "";
+
+
+  final _userNameFieldController = TextEditingController();
+  final _emailFieldController = TextEditingController();
+  final _passwordFieldController = TextEditingController();
+  final phoneController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getUserInfo().whenComplete(() {
+      // _userNameFieldController.text = userName;
+      _emailFieldController.text = email;
+      // _passwordFieldController.text = password;
+      phoneController.text = PhoneNumber;
+
+    });
+  }
+
+  getUserInfo() async {
+    // if user sign in
+    User? user = await FirebaseAuth.instance.currentUser;
+
+    // get user info
+    if (user != null) {
+      email = user.email.toString();
+    }
+  }
+
 
   saveProfile() async {
-
-
-
       FirebaseAuth.instance.userChanges();
       //DatabaseServices.updateUserData(user);
-
     }
 
 
@@ -68,23 +97,23 @@ class _editProfileState extends State<MyProfile>{
                         ),
                       ),
                     ),
-                    Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container (
-                          height: 37,
-                          width: 37,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                            width: 3,
-                              color: Colors.black12,
-                            ),
-                            color: Colors.green,
-                          ), // BoxDecoration
-                          child: Icon(Icons.edit, color: Colors .white,),
-                        ),
-                    ),
+                    // Positioned(
+                    //     bottom: 0,
+                    //     right: 0,
+                    //     child: Container (
+                    //       height: 37,
+                    //       width: 37,
+                    //       decoration: BoxDecoration(
+                    //         shape: BoxShape.circle,
+                    //         border: Border.all(
+                    //         width: 3,
+                    //           color: Colors.black12,
+                    //         ),
+                    //         color: Colors.green,
+                    //       ), // BoxDecoration
+                    //       child: Icon(Icons.edit, color: Colors .white,),
+                    //     ),
+                    // ),
                   ],
                 ),
               ),
@@ -96,12 +125,13 @@ class _editProfileState extends State<MyProfile>{
                   contentPadding: EdgeInsets.only(bottom: 4),
                   labelText: "UserName",
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  hintText: "should have username",
+                  hintText: userName,
                   hintStyle: TextStyle(
                     fontSize: 16, fontWeight: FontWeight.bold,
                     color: Colors.black12,
                   ),
                 ),
+                controller: _userNameFieldController,
               ),
               Padding(padding: EdgeInsets.only(bottom: 40),),
               TextField(
@@ -109,79 +139,31 @@ class _editProfileState extends State<MyProfile>{
                   contentPadding: EdgeInsets.only(bottom: 4),
                   labelText: "E-mail",
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  hintText: "should have E-mail",
+                  hintText: email,
                   hintStyle: TextStyle(
                     fontSize: 16, fontWeight: FontWeight.bold,
                     color: Colors.black12,
                   ),
                 ),
+                controller: _emailFieldController,
               ),
               Padding(padding: EdgeInsets.only(bottom: 40),),
               TextField(
-                // obscureText: isPasswordTextField,
                 decoration:InputDecoration(
-                  // suffixIcon: isPass,
                   contentPadding: EdgeInsets.only(bottom: 4),
-
-                  labelText: "Password",
+                  labelText: "Phone Number",
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  hintText: "should have Password",
-                  // i have to make the password stars
+                  hintText: PhoneNumber,
                   hintStyle: TextStyle(
                     fontSize: 16, fontWeight: FontWeight.bold,
                     color: Colors.black12,
                   ),
                 ),
+                controller: phoneController,
+
               ),
               SizedBox(
                 height: 40,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  //cancel button
-                  OutlinedButton(
-                    onPressed: (){},
-                    style: OutlinedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 60),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                    ),
-                    child: Text('Cancel',
-                    style: TextStyle(fontSize: 15,letterSpacing: 2,
-                    color: Colors.black),),
-                  ),
-                  //save button
-                  ElevatedButton(onPressed: (){},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueGrey ,
-                    padding: EdgeInsets.symmetric(horizontal: 60),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
-                    ),
-                   ),
-                    child: Column(
-                    children: [
-                      GestureDetector(
-                      onTap: saveProfile,
-                      child: Container(
-                        width: 100,
-                        height: 35,
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-
-                        ),
-                        child: Text('Save',
-                          style: TextStyle(fontSize: 15,letterSpacing: 2,
-                              color: Colors.white),),
-
-                      )
-                      ) ],
-
-                    )
-                  )
-                ],
-
               ),
             ],
           ),
