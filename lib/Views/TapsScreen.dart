@@ -1,7 +1,9 @@
+import 'package:easy_ride_app/Views/BookScreen.dart';
 import 'package:flutter/material.dart';
 
 import '../Controllers/SearchController.dart';
 import '../Models/RideResult.dart';
+import 'BookScreen.dart';
 
 class TapsScreen extends StatefulWidget {
   TapsScreenState createState() => TapsScreenState();
@@ -216,6 +218,9 @@ class TapsScreenState extends State<TapsScreen> {
             shape: filterList[index].product_id == optimalChoiceId ?
             BeveledRectangleBorder(side: BorderSide(color:Colors.grey, width: 1),)
                 : null,
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>BookScreen(rideResult: rideResultList[index], time: time)));
+            },
           );
 
           // return SizedBox(height: 0); Elaf????
