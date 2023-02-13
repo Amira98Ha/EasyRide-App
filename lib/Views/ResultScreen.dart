@@ -1,185 +1,240 @@
-import '../Models/UberAPI/Uber.dart';
-import '../Models/UberAPI/UberPrices.dart';
-import '../Models/UberAPI/UberTimes.dart';
-import '../Models/BoltAPI/Bolt.dart';
-import '../Models/BoltAPI/BoltPrices.dart';
-import '../Models/BoltAPI/BoltTimes.dart';
-import '../Models/RideResult.dart';
-
 import 'package:flutter/material.dart';
 
+import '../Controllers/SearchController.dart';
+import '../Models/RideResult.dart';
 
 class ResultScreen extends StatefulWidget {
-  @override
-  _ResultScreenState createState() => _ResultScreenState();
+  ResultScreen({required this.start_latitude, required this.start_longitude,
+    required this.end_latitude, required this.end_longitude});
+
+  final start_latitude;
+  final start_longitude;
+  final end_latitude;
+  final end_longitude;
+
+  ResultScreenState createState() => ResultScreenState();
 }
 
-class _ResultScreenState extends State<ResultScreen> {
-  var start_latitude = 21.580948130893006;
-  var start_longitude = 39.1806807119387;
-  var end_latitude = 21.627725155960892;
-  var end_longitude = 39.11108797417971;
+class ResultScreenState extends State<ResultScreen> {
+  late Future<void> _future;
 
-  // list to display result
+  // to display result
+  SearchController searchController = SearchController();
   List<RideResult> rideResultList = [];
+  List<RideResult> priceRideResultList = [];
+  List<RideResult> timeRideResultList = [];
+  var optimalChoiceId = "";
 
-  // for uber app
-  Uber uberOpject = new Uber();
-  List<UberPrices> uberPriceList = [];
-  List<UberTimes> uberTimeList = [];
-
-  // for bolt app
-  Bolt boltOpject = new Bolt();
-  List<BoltPrices> boltPriceList = [];
-  List<BoltTimes> boltTimeList = [];
-
+  @override
+  void initState() {
+    _future = searchRides();
+    super.initState();
+  }
 
   Future<void> searchRides() async {
-    await getUberPriceEstimates();
-    await getUberTimeEstimates();
-    await getBoltPriceEstimates();
-    await getBoltTimeEstimates();
-    print("UBER display---------");
-    joinList("Uber", uberPriceList, uberTimeList);
-    print("BOLT display---------");
-    joinList("Bolt", boltPriceList, boltTimeList);
-    print("PRICE display---------");
-    priceCompare();
+    // get full ride result list
+    rideResultList = await searchController.searchRides();
+    // get optimal choice
+    optimalChoiceId = await searchController.optimalChoice(rideResultList);
   }
 
-  // Price Estimates for uber app
-  Future<void> getUberPriceEstimates() async {
-    uberPriceList = await uberOpject.uberPriceEstimates
-        .getPrice(start_latitude, start_longitude, end_latitude, end_longitude);
-  }
-
-  // Time Estimates for uber app
-  Future<void> getUberTimeEstimates() async {
-    uberTimeList = await uberOpject.uberTimeEstimates
-        .getTime(start_latitude, start_longitude);
-  }
-
-  // Price Estimates for bolt app
-  Future<void> getBoltPriceEstimates() async {
-    boltPriceList = await boltOpject.boltPriceEstimates
-        .getPrice(start_latitude, start_longitude, end_latitude, end_longitude);
-  }
-
-  // Time Estimates for bolt app
-  Future<void> getBoltTimeEstimates() async {
-    boltTimeList = await boltOpject.boltTimeEstimates
-        .getTime(start_latitude, start_longitude);
-  }
-
-  // join price list and time list
-  void joinList(var app_name, List priceList, List timeList) {
-    for (var i = 0; i < priceList.length; i++) {
-      for (var j = 0; j < timeList.length; j++) {
-        // check if product id identical
-        if (priceList[i].product_id == timeList[j].product_id) {
-          // create new rideResult object
-          RideResult rideResultObject = RideResult(
-              app_name,
-              priceList[i].product_id,
-              priceList[i].display_name,
-              priceList[i].estimate,
-              timeList[j].estimate,
-              priceList[i].low_estimate,
-              priceList[i].high_estimate);
-
-          // add objet to rideResultList
-          rideResultList.add(rideResultObject);
-
-          // remove object from uberTimeList
-          timeList.removeAt(j);
-
-          // exit timeList
-          break;
-        }
-      } // end for
-    } // end for
-  }
-
-  //Sort list in term of cheapest
-  void priceCompare() async {
-    //sort price ascending
-    rideResultList.sort((a, b) => a.estimate_price.compareTo(b.estimate_price));
-
-    //choose first index for cheapest
-    // var cheapRide= rideResultList[0].low_estimate;
-    // for(var i = 0; i < rideResultList.length; i++){
-    //   if(rideResultList[i].low_estimate < cheapRide) {
-    //     //store the cheapest ride using its product it
-    //     cheapRide= rideResultList[i].product_id;
-    //     rideResultList.add(cheapRide);
-    //   }
-    //   else if(rideResultList[i].low_estimate == cheapRide){
-    //     //check later
-    //
-    //   }
-    // }
-
-  }
-
-
-
-  void OptimalChoice() {
-
-  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
-      future: searchRides(), // function to search for rides
+      future: _future, // function to search for rides
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         // if searchRides() has not finish
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: Text('Please wait its loading...'));
+          return Center(child: new CircularProgressIndicator(
+            color: Colors.black,
+            strokeWidth: 2,
+          ),);
         }
         else {
           // if searchRides() has error
           if (snapshot.hasError)
             return Center(child: Text('Error: ${snapshot.error}'));
+
           else {
-            // if searchRides() finish successfully
-            return Scaffold(
-              //Check if there is available rides or not
-              body: rideResultList.length > 0
-                  ? ListView.separated(
-                itemCount: rideResultList.length,
-                itemBuilder: (context, int index) {
-                  num time = rideResultList[index].estimate_time / 60;
-                  return ListTile(
-                    //if app name == Bolt present bolt img
-                    leading: rideResultList[index].app_name.toString() == "Bolt"
-                        ?
-                    const CircleAvatar(
-                      radius: 23,
-                      backgroundImage: AssetImage("assets/Bolt_Logo.png",),
-                    )
-                    //if app name == Uber present uber img
-                        : const CircleAvatar(
-                      radius: 23,
-                      backgroundImage: AssetImage("assets/Uber_Logo.png",),
-                    ),
-                    title: Text(rideResultList[index].display_name),
-                    subtitle: Text("${time.toInt()} min to arrive"),
-                    trailing: Text(
-                        "${rideResultList[index].estimate_price} SAR"),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) =>
-                const Divider(
-                  color: Colors.white,
+            //Display Nested Tap Bar
+            return DefaultTabController(
+              length: 2,
+              child: Scaffold(
+                appBar: AppBar(
+                  title: Text("Rides Result"),
+                  backgroundColor: Colors.black,
+                  titleTextStyle: TextStyle(fontSize: 20.0, fontFamily: "Brand Bold"),
+                  centerTitle: true,
+                  bottom: TabBar(
+                    indicatorColor: Colors.white,
+                    tabs: <Widget>[
+                      //1-tap
+                      Tab(
+                        child: Text(
+                          "Cheapest",
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontFamily: "Brand Bold",
+                          ),
+                        ),
+                      ),
+
+                      //2-tap
+                      Tab(
+                        child: Text(
+                          "Fastest",
+                          style: TextStyle(fontSize: 18.0, fontFamily: "Brand Bold"),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              )
-                  : const Center(
-                child: Text("Sorry,There is no available rides right now"),),
+
+                body: TabBarView(
+                  children: [
+                    SortRide("Cheapest"),
+                    SortRide("Fastest"),
+                  ],
+                ),
+              ),
             );
           } // else
         } // else
-      },
+      }, // builder
     );
   } // build
 
-} // ResultScreen
+
+  SortRide(String kind) {
+    List<RideResult> sortList = [];
+
+    // filter based on (All,Standard,Family,Luxury)
+    if (kind == "Cheapest") {
+      sortList = searchController.priceCompare(rideResultList);
+    }
+    else if (kind == "Fastest") {
+      sortList = searchController.timeCompare(rideResultList);
+    }
+
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: AppBar(
+            backgroundColor: Colors.white,
+            bottom: TabBar(
+              indicatorColor: Colors.black,
+              tabs: <Widget>[
+                //1- Tap
+                Tab(
+                  child: Text(
+                    "All",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+
+                //2- Tap
+                Tab(
+                  child: Text(
+                    "Standard",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+
+                //3- Tap
+                Tab(
+                  child: Text(
+                    "Family",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+
+                //4- Tap
+                Tab(
+                  child: Text(
+                    "Luxury",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            FilterRide(sortList, "All"),
+            FilterRide(sortList, "Standard"),
+            FilterRide(sortList, "Family"),
+            FilterRide(sortList, "Luxury"),
+          ],
+        ),
+      ),
+    );
+  } // SortRide
+
+  FilterRide(List<RideResult> sortList, String kind) {
+    List<RideResult> filterList = [];
+
+    // filter based on (All,Standard,Family,Luxury)
+    if (kind == "All") {
+      filterList = sortList;
+    }
+    else if (kind == "Standard") {
+      filterList = searchController.standardRides(sortList);
+    }
+    else if (kind == "Family") {
+      filterList = searchController.familyRides(sortList);
+    }
+    else if (kind == "Luxury") {
+      filterList = searchController.luxuryRides(sortList);
+    }
+
+    return Scaffold(
+      //Check if there is available rides or not
+      body: filterList.isNotEmpty
+          ? ListView.separated(
+        itemCount: filterList.length,
+        itemBuilder: (context, int index) {
+          num time = filterList[index].estimate_time / 60;
+          return ListTile(
+            //if app name == Bolt present bolt img
+            leading: filterList[index].app_name.toString() == "Bolt"
+                ? const CircleAvatar(
+              radius: 23,
+              backgroundImage: AssetImage(
+                "assets/Bolt_Logo.png",
+              ),
+            )
+            //if app name == Uber present uber img
+                : const CircleAvatar(
+              radius: 23,
+              backgroundImage: AssetImage(
+                "assets/Uber_Logo.png",
+              ),
+            ),
+            title: Text(filterList[index].display_name),
+            subtitle: filterList[index].product_id == optimalChoiceId ?
+            Text("${time.toInt()} min to arrive \nOptimal choice") :
+            Text("${time.toInt()} min to arrive"),
+            trailing: Text("${filterList[index].estimate_price} SAR"),
+            isThreeLine: filterList[index].product_id == optimalChoiceId ? true : false,
+            tileColor: filterList[index].product_id == optimalChoiceId ? Colors.black12 : null,
+            shape: filterList[index].product_id == optimalChoiceId ?
+            BeveledRectangleBorder(side: BorderSide(color:Colors.grey, width: 1),)
+                : null,
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) =>
+        const Divider(
+          color: Colors.white,
+        ),
+      )
+          : const Center(
+        child: Text("Sorry,There is no available rides right now :("),
+      ),
+    );
+  } // FilterRide
+
+}

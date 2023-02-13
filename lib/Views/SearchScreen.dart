@@ -8,7 +8,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_place/google_place.dart';
 import '../Models/MapsConstants.dart';
-import 'TapsScreen.dart';
+import 'ResultScreen.dart';
 
 
 class SearchScreen extends StatefulWidget {
@@ -306,7 +306,11 @@ class _SearchScreenState extends State<SearchScreen> {
                   //Next Page
                   print("start point = current location and end point NOT NULL");
                   Navigator.push( context,  MaterialPageRoute(
-                  builder: (context) => TapsScreen(), //RideResult Screen
+                  builder: (context) => ResultScreen(
+                      start_latitude: start_latitude,
+                      start_longitude: start_longitude,
+                      end_latitude: end_latitude,
+                      end_longitude: end_longitude), //RideResult Screen
                   ),);
                   }
 
@@ -357,7 +361,11 @@ class _SearchScreenState extends State<SearchScreen> {
                     //Next Page
                     print("start point and end pont NOT NULL");
                     Navigator.push( context,  MaterialPageRoute(
-                      builder: (context) => TapsScreen(), //RideResult Scree
+                      builder: (context) => ResultScreen(
+                          start_latitude: start_latitude,
+                          start_longitude: start_longitude,
+                          end_latitude: end_latitude,
+                          end_longitude: end_longitude), //RideResult Screen
                     ),);
                   }
 

@@ -1,7 +1,7 @@
 import 'package:easy_ride_app/Views/Profile.dart';
 import 'package:easy_ride_app/Views/SearchScreen.dart';
 import 'package:easy_ride_app/Views/SignUpScreen.dart';
-import 'package:easy_ride_app/Views/TapsScreen.dart';
+import 'package:easy_ride_app/Views/ResultScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Easy Ride App',
-      home: MyProfile(),
+      home: MapScreen(),
     );
   }
 }
