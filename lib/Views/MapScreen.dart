@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:easy_ride_app/Views/Profile.dart';
-import 'package:easy_ride_app/Views/ResultScreen.dart';
+import 'package:easy_ride_app/Views/login_signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../Controllers/GeolocatorController.dart';
 import 'SearchScreen.dart';
-import 'SignInScreen.dart';
+
 
 class MapScreen extends StatefulWidget {
   @override
@@ -75,7 +75,7 @@ Widget buildMenuItems(BuildContext context) => Container(
           FirebaseAuth.instance.signOut().then(
               (value){
               print("signed out");
-               Navigator.push(context, MaterialPageRoute(builder: (context)=> SignInScreen()));
+               Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginSignUp()));
 });
         },
       ),

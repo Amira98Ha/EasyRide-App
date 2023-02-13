@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:ryflex/map_page.dart';
 import 'reusable_widgets/progressDialog.dart';
 import 'reusable_widgets/reusable_widget.dart';
 
@@ -23,8 +22,8 @@ class _LoginSignUpState extends State<LoginSignUp> {
   TextEditingController userNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
 
-  bool signUpPage = true;
-  String btnText = "SignUp";
+  bool signUpPage = false;
+  String btnText = "SignIn";
 
 
   @override
@@ -74,19 +73,20 @@ class _LoginSignUpState extends State<LoginSignUp> {
               btnText = "SignUp";
             });
           },
-          child: Text("SignUp", style: TextStyle(color: Colors.grey,
+          child: Text("SignUp", style: TextStyle(color: Colors.grey[700],
               fontSize: 25),),
         ),
         InkWell(
           onTap: () {
             setState(() {
               signUpPage = false;
-              btnText = "Login";
+              btnText = "SignIn";
             });
 
 
           },
-          child: Text("Login", style: TextStyle(color: Colors.grey,
+
+          child: Text("SignIn", style: TextStyle(color: Colors.grey[700],
               fontSize: 25),),
         ),
       ],
@@ -192,8 +192,8 @@ class _LoginSignUpState extends State<LoginSignUp> {
               : _login();
         },
         style: ElevatedButton.styleFrom(
-          primary: Colors.white,
-          onPrimary: Colors.black,
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.black,
         ),
         child: Padding(
           padding: const EdgeInsets.all(14.0),
@@ -235,9 +235,10 @@ class _LoginSignUpState extends State<LoginSignUp> {
       });
       Navigator.pop(context);
       displayToastMsg(context, "Congratulations, account created", "Success");
-      print("User created successly");
+      print("User created successfly");
       setState(() {
         signUpPage = false;
+
         btnText = "Login";
       });
     }else {
@@ -253,7 +254,7 @@ class _LoginSignUpState extends State<LoginSignUp> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context){
-          return ProgressDialog(message: "Verifying Login, please wait...");
+          return ProgressDialog(message: "Verifying Sign In, please wait...");
         });
 
     final User? user = (
@@ -270,11 +271,11 @@ class _LoginSignUpState extends State<LoginSignUp> {
       Navigator.pop(context);
       Navigator.push(context, MaterialPageRoute(builder: (context)
       => MapScreen()));
-      print("Login Successful");
+      print("Sign In Successful");
     } else {
       Navigator.pop(context);
-      displayToastMsg(context, "Login failed", "Failed");
-      print("Login failed");
+      displayToastMsg(context, "Sign In failed", "Failed");
+      print("Sign In failed");
     }
   }
 
