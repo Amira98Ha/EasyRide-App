@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../Controllers/SearchController.dart';
 import '../Models/RideResult.dart';
+import 'BookScreen.dart';
 
 class ResultScreen extends StatefulWidget {
   final start_latitude;
@@ -226,6 +227,9 @@ class ResultScreenState extends State<ResultScreen> {
             shape: filterList[index].product_id == optimalChoiceId ?
             BeveledRectangleBorder(side: BorderSide(color:Colors.grey, width: 1),)
                 : null,
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>BookScreen(rideResult: rideResultList[index], time: time)));
+            },
           );
         },
         separatorBuilder: (BuildContext context, int index) =>

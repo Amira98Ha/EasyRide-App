@@ -223,7 +223,6 @@ class _LoginSignUpState extends State<LoginSignUp> {
         })
     ).user;
     if(user != null){
-
       userRef.doc(user.uid).set({
         "name" : userNameController.text.trim(),
         "email" : emailController.text.trim(),

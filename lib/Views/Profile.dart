@@ -1,5 +1,6 @@
 import 'package:easy_ride_app/Views/MapScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,7 @@ class _editProfileState extends State<MyProfile>{
   void initState() {
     super.initState();
     getUserInfo().whenComplete(() {
-      // _userNameFieldController.text = userName;
+      _userNameFieldController.text = userName;
       _emailFieldController.text = email;
       // _passwordFieldController.text = password;
       phoneController.text = PhoneNumber;
@@ -39,11 +40,18 @@ class _editProfileState extends State<MyProfile>{
   getUserInfo() async {
     // if user sign in
     User? user = await FirebaseAuth.instance.currentUser;
+    final userRef = FirebaseFirestore.instance.collection("users");
+    final query = userRef.doc(user?.uid).get();
 
-    // get user info
-    if (user != null) {
-      email = user.email.toString();
-    }
+    query.then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        userName = documentSnapshot.get("name").toString();
+        email = documentSnapshot.get("email").toString();
+        PhoneNumber = documentSnapshot.get("phone").toString();
+      } else {
+        print('Document does not exist on the database');
+      }
+    });
   }
 
 
