@@ -14,6 +14,7 @@ import 'ResultScreen.dart';
 class SearchScreen extends StatefulWidget {
   SearchScreen({required this.currentPosition});
   final Position currentPosition;
+
   @override
   _SearchScreenState createState() {
     return _SearchScreenState(currentPosition);

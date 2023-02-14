@@ -1,0 +1,48 @@
+{
+  "prices": [
+    {
+      "localized_display_name": "Economy",
+      "distance": 30.5,
+      "display_name": "Economy",
+      "product_id": "26546850-e557-4d7b-86e7-6a3945645248",
+      "high_estimate":60,
+      "low_estimate":51,
+      "duration": 2000,
+      "estimate": "51-60",
+      "currency_code": "SAR"
+    },
+    {
+      "localized_display_name": "Bolt",
+      "distance": 30.5,
+      "display_name": "Bolt",
+      "product_id": "a1111d3c-c720-46c3-8534-2fcdd834540b",
+      "high_estimate": 73,
+      "low_estimate": 58,
+      "duration": 2000,
+      "estimate": "58-73",
+      "currency_code": "SAR"
+    },
+    {
+      "localized_display_name": "VIP",
+      "distance": 30.5,
+      "display_name": "VIP",
+      "product_id": "57c0ff4e-1493-6ea9-a4df-6b961525da73",
+      "high_estimate": 90,
+      "low_estimate": 81,
+      "duration": 2000,
+      "estimate": "81-90",
+      "currency_code": "SAR"
+    },
+    {
+      "localized_display_name": "XL",
+      "distance": 30.5,
+      "display_name": "XL",
+      "product_id": "d4adea7-f4d6-4152-91cc-77523e1526a5",
+      "high_estimate": 78,
+      "low_estimate": 57,
+      "duration": 2000,
+      "estimate": "57-78",
+      "currency_code": "SAR"
+    }
+  ]
+}

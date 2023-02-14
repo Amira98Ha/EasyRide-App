@@ -9,10 +9,10 @@ import '../Models/BoltAPI/BoltTimes.dart';
 import '../Models/RideResult.dart';
 
 class SearchController {
-  var start_latitude = 21.580948130893006;
-  var start_longitude = 39.1806807119387;
-  var end_latitude = 21.627725155960892;
-  var end_longitude = 39.11108797417971;
+  var start_latitude;
+  var start_longitude;
+  var end_latitude;
+  var end_longitude;
 
   // to display result
   List<RideResult> rideResultList = [];
@@ -28,7 +28,14 @@ class SearchController {
   List<BoltPrices> boltPriceList = [];
   List<BoltTimes> boltTimeList = [];
 
-  Future<List<RideResult>> searchRides() async {
+  Future<List<RideResult>> searchRides(var start_latitude, var start_longitude,
+      var end_latitude, var end_longitude) async {
+
+    this.start_latitude = start_latitude;
+    this.start_longitude = start_longitude;
+    this.end_latitude = end_latitude;
+    this.end_longitude = end_longitude;
+
     await getUberPriceEstimates();
     await getUberTimeEstimates();
     await getBoltPriceEstimates();
@@ -37,7 +44,6 @@ class SearchController {
     joinList("Uber", uberPriceList, uberTimeList);
     print("BOLT display---------");
     joinList("Bolt", boltPriceList, boltTimeList);
-    print("PRICE display---------");
 
     return rideResultList;
   }

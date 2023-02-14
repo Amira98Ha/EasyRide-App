@@ -4,14 +4,15 @@ import '../Controllers/SearchController.dart';
 import '../Models/RideResult.dart';
 
 class ResultScreen extends StatefulWidget {
-  ResultScreen({required this.start_latitude, required this.start_longitude,
-    required this.end_latitude, required this.end_longitude});
-
   final start_latitude;
   final start_longitude;
   final end_latitude;
   final end_longitude;
 
+  ResultScreen({Key? key, required this.start_latitude, required this.start_longitude,
+    required this.end_latitude, required this.end_longitude}) : super(key: key);
+
+  @override
   ResultScreenState createState() => ResultScreenState();
 }
 
@@ -33,7 +34,8 @@ class ResultScreenState extends State<ResultScreen> {
 
   Future<void> searchRides() async {
     // get full ride result list
-    rideResultList = await searchController.searchRides();
+    rideResultList = await searchController.searchRides(widget.start_latitude,
+        widget.start_longitude, widget.end_latitude, widget.end_longitude);
     // get optimal choice
     optimalChoiceId = await searchController.optimalChoice(rideResultList);
   }

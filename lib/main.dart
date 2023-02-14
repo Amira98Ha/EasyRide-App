@@ -1,4 +1,5 @@
 
+import 'package:easy_ride_app/Views/MapScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Easy Ride App',
-      home: LoginSignUp(),
+      home: MapScreen(),
     );
   }
 }

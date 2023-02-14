@@ -1,0 +1,59 @@
+{
+  "prices": [
+    {
+      "localized_display_name": "Comfort",
+      "distance": 30.5,
+      "display_name": "Comfort",
+      "product_id": "26545412-e557-4a7b-86e7-6a39424541a4",
+      "high_estimate": 51,
+      "low_estimate": 47,
+      "duration": 2000,
+      "estimate": "47-51",
+      "currency_code": "SAR"
+    },
+    {
+      "localized_display_name": "uberX",
+      "distance": 30.5,
+      "display_name": "uberX",
+      "product_id": "a1111c8c-c720-46c3-8534-2fcdd735441e",
+      "high_estimate": 45,
+      "low_estimate": 38,
+      "duration": 2000,
+      "estimate": "38-45",
+      "currency_code": "SAR"
+    },
+    {
+      "localized_display_name": "uberXL",
+      "distance": 30.5,
+      "display_name": "uberXL",
+      "product_id": "82165d8-3bd5-4e27-9604-194e4359ae29",
+      "high_estimate": 56,
+      "low_estimate": 43,
+      "duration": 2000,
+      "estimate": "43-56",
+      "currency_code": "SAR"
+    },
+    {
+      "localized_display_name": "BLACK",
+      "distance": 30.5,
+      "display_name": "BLACK",
+      "product_id": "d4abaae7-f4d6-4152-91cc-77523e8195e2",
+      "high_estimate": 75,
+      "low_estimate": 71,
+      "duration": 2000,
+      "estimate": "71-75",
+      "currency_code": "SAR"
+    },
+    {
+      "localized_display_name": "UberX Saver",
+      "distance": 30.5,
+      "display_name": "UberX Saver",
+      "product_id": "2832ed45-cfc0-48bb-ab76-7ea7a62056ea",
+      "high_estimate": 48,
+      "low_estimate": 34,
+      "duration": 2000,
+      "estimate": "43-48",
+      "currency_code": "SAR"
+    }
+  ]
+}

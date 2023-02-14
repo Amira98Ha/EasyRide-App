@@ -1,0 +1,28 @@
+{
+  "times": [
+    {
+      "localized_display_name": "Economy",
+      "estimate": 500,
+      "display_name": "Economy",
+      "product_id": "26546850-e557-4d7b-86e7-6a3945645248"
+    },
+    {
+      "localized_display_name": "Bolt",
+      "estimate": 120,
+      "display_name": "Bolt",
+      "product_id": "a1111d3c-c720-46c3-8534-2fcdd834540b"
+    },
+    {
+      "localized_display_name": "VIP",
+      "estimate": 400,
+      "display_name": "VIP",
+      "product_id": "57c0ff4e-1493-6ea9-a4df-6b961525da73"
+    },
+    {
+      "localized_display_name": "XL",
+      "estimate": 360,
+      "display_name": "XL",
+      "product_id": "d4abaae7-f4d6-4152-91cc-77523e8165a5"
+    }
+  ]
+}
