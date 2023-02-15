@@ -12,17 +12,12 @@ class MyProfile extends StatefulWidget {
 class _editProfileState extends State<MyProfile> {
   late Future<void> _future;
 
-  final _formKey = GlobalKey<FormState>();
-  bool _isLoading = false;
-
   String userName = "";
   String email = "";
-  String password = "";
   String PhoneNumber = "";
 
   final _userNameFieldController = TextEditingController();
   final _emailFieldController = TextEditingController();
-  final _passwordFieldController = TextEditingController();
   final phoneController = TextEditingController();
 
   @override
@@ -47,18 +42,12 @@ class _editProfileState extends State<MyProfile> {
         PhoneNumber = documentSnapshot.get("phone").toString();
         _userNameFieldController.text = userName;
         _emailFieldController.text = email;
-        // _passwordFieldController.text = password;
         phoneController.text = PhoneNumber;
       }
       else {
         print('Document does not exist on the database');
       }
     });
-  }
-
-  saveProfile() async {
-    FirebaseAuth.instance.userChanges();
-    //DatabaseServices.updateUserData(user);
   }
 
   @override
@@ -126,23 +115,6 @@ class _editProfileState extends State<MyProfile> {
                                 ),
                               ),
                             ),
-                            // Positioned(
-                            //     bottom: 0,
-                            //     right: 0,
-                            //     child: Container (
-                            //       height: 37,
-                            //       width: 37,
-                            //       decoration: BoxDecoration(
-                            //         shape: BoxShape.circle,
-                            //         border: Border.all(
-                            //         width: 3,
-                            //           color: Colors.black12,
-                            //         ),
-                            //         color: Colors.green,
-                            //       ), // BoxDecoration
-                            //       child: Icon(Icons.edit, color: Colors .white,),
-                            //     ),
-                            // ),
                           ],
                         ),
                       ),
