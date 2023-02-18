@@ -6,14 +6,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'reusable_widgets/progressDialog.dart';
 import 'reusable_widgets/reusable_widget.dart';
 
-class LoginSignUp extends StatefulWidget {
+class SigninSignUp extends StatefulWidget {
 
 
   @override
-  _LoginSignUpState createState() => _LoginSignUpState();
+  _SigninSignUpState createState() => _SigninSignUpState();
 }
 
-class _LoginSignUpState extends State<LoginSignUp> {
+class _SigninSignUpState extends State<SigninSignUp> {
 
   final userRef = FirebaseFirestore.instance.collection("users");
 
@@ -189,7 +189,7 @@ class _LoginSignUpState extends State<LoginSignUp> {
         onPressed: (){
           (signUpPage)
               ? _register()
-              : _login();
+              : _signIn();
         },
         style: ElevatedButton.styleFrom(
           foregroundColor: Colors.white,
@@ -204,14 +204,12 @@ class _LoginSignUpState extends State<LoginSignUp> {
   final FirebaseAuth  _auth = FirebaseAuth.instance;
 
   void _register() async {
-
     showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context){
           return ProgressDialog(message: "Registering, please wait...");
         });
-
     final User? user = (
         await _auth.createUserWithEmailAndPassword(
             email: emailController.text.trim(),
@@ -230,15 +228,13 @@ class _LoginSignUpState extends State<LoginSignUp> {
       })
           .then((value) => null)
           .catchError((onError){
-
       });
       Navigator.pop(context);
       displayToastMsg(context, "Congratulations, account created", "Success");
       print("User created successfly");
       setState(() {
         signUpPage = false;
-
-        btnText = "Login";
+        btnText = "Signin";
       });
     }else {
       Navigator.pop(context);
@@ -247,8 +243,7 @@ class _LoginSignUpState extends State<LoginSignUp> {
     }
   }
 
-  void _login() async {
-
+  void _signIn() async {
     showDialog(
         context: context,
         barrierDismissible: false,

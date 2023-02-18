@@ -25,7 +25,7 @@ class BoltPriceEstimates {
     // check distance
     if (distanceInMeters <= 10000) {
       // parsing json file
-      priceFile = await rootBundle.loadString('json/BoltPriceEstimates1.json');
+      priceFile = await rootBundle.loadString('json/BoltPriceEstimates2.json');
       priceJson = jsonDecode(priceFile);
     }
     else if (distanceInMeters > 10000) {

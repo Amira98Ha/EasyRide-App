@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:easy_ride_app/Views/Profile.dart';
-import 'package:easy_ride_app/Views/login_signup.dart';
+import 'package:easy_ride_app/Views/signin_signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -75,7 +75,7 @@ Widget buildMenuItems(BuildContext context) => Container(
           FirebaseAuth.instance.signOut().then(
               (value){
               print("signed out");
-               Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginSignUp()));
+               Navigator.push(context, MaterialPageRoute(builder: (context)=> SigninSignUp()));
 });
         },
       ),
