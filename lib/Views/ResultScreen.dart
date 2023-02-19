@@ -23,8 +23,6 @@ class ResultScreenState extends State<ResultScreen> {
   // to display result
   SearchController searchController = SearchController();
   List<RideResult> rideResultList = [];
-  List<RideResult> priceRideResultList = [];
-  List<RideResult> timeRideResultList = [];
   var optimalChoiceId = "";
 
   @override
